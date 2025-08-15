@@ -116,6 +116,6 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 
 ## Youtube
-[![Watch the video](https://img.youtube.com/vi/hahrx5WUeNI/0.jpg)](https://www.youtube.com/watch?v=hahrx5WUeNI)
+https://www.youtube.com/watch?v=hahrx5WUeNI
 
 
