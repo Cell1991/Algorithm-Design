@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bubble Sort Visualization</title>
+  <style>
+    .bar { display: inline-block; width: 30px; margin: 2px; background: steelblue; text-align:center; color:white;}
+  </style>
+</head>
+<body>
+  <div id="array"></div>
+  <button onclick="prevStep()">Previous</button>
+  <button onclick="nextStep()">Next</button>
+
+<script>
+let steps = [
+  [5,3,8,4,2],
+  [3,5,8,4,2],
+  [3,5,4,8,2],
+  [3,5,4,2,8],
+  [3,4,2,5,8],
+  [3,2,4,5,8],
+  [2,3,4,5,8]
+];
+
+let current = 0;
+
+function render() {
+  let container = document.getElementById('array');
+  container.innerHTML = '';
+  steps[current].forEach(v => {
+    let bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.textContent = v;
+    container.appendChild(bar);
+  });
+}
+
+function nextStep() { if(current<steps.length-1){current++; render();} }
+function prevStep() { if(current>0){current--; render();} }
+
+render();
+</script>
+</body>
+</html>
