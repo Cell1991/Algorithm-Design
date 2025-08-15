@@ -78,11 +78,37 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 ---
 
-## 7. Visualization
-```
-Initial: [5, 3, 8, 4, 2]
-Pass 1:  [3, 5, 4, 2, 8]
-Pass 2:  [3, 4, 2, 5, 8]
-Pass 3:  [3, 2, 4, 5, 8]
-Pass 4:  [2, 3, 4, 5, 8]  → Sorted
-```
+## 7. Visualization (Detailed Steps)
+
+### Initial
+[5, 3, 8, 4, 2]
+
+---
+
+### Pass 1
+- Step 1: Compare 5 & 3 → swap → [3, 5, 8, 4, 2]
+- Step 2: Compare 5 & 8 → no swap → [3, 5, 8, 4, 2]
+- Step 3: Compare 8 & 4 → swap → [3, 5, 4, 8, 2]
+- Step 4: Compare 8 & 2 → swap → [3, 5, 4, 2, 8]
+
+---
+
+### Pass 2
+- Step 1: Compare 3 & 5 → no swap → [3, 5, 4, 2, 8]
+- Step 2: Compare 5 & 4 → swap → [3, 4, 5, 2, 8]
+- Step 3: Compare 5 & 2 → swap → [3, 4, 2, 5, 8]
+
+---
+
+### Pass 3
+- Step 1: Compare 3 & 4 → no swap → [3, 4, 2, 5, 8]
+- Step 2: Compare 4 & 2 → swap → [3, 2, 4, 5, 8]
+
+---
+
+### Pass 4
+- Step 1: Compare 3 & 2 → swap → [2, 3, 4, 5, 8]
+
+---
+
+✅ **Sorted Result:** [2, 3, 4, 5, 8]
