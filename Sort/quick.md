@@ -48,9 +48,7 @@ j = 3 → 4 > 2 → ไม่ขยับ
 
 ---
 
-## 4. โค้ด Quick Sort ครอบคลุมทุก Pivot Strategy
-
-# Quick Sort – Pivot Strategies (แยกแต่ละแบบ)
+## 4. โค๊ด Quick Sort – Pivot Strategies (แยกแต่ละแบบ)
 
 ## Pivot แบบที่ 1: First Element
 ```python
