@@ -130,7 +130,7 @@ def partition(arr, low, high):
     return i + 1
 ```
 
-## ตัวอย่างการใช้งาน
+### ตัวอย่างการใช้งาน
 ```python
 data = [5, 3, 8, 4, 2]
 quick_sort_median3(data)
