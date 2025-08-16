@@ -50,33 +50,78 @@ j = 3 → 4 > 2 → ไม่ขยับ
 
 ## 4. โค้ด Quick Sort ครอบคลุมทุก Pivot Strategy
 
-```python
-import random
+# Quick Sort – Pivot Strategies (แยกแต่ละแบบ)
 
-def quick_sort(arr, low=0, high=None, pivot_method='last'):
+## Pivot แบบที่ 1: First Element
+```python
+def quick_sort_first(arr, low=0, high=None):
     if high is None:
         high = len(arr) - 1
     if low < high:
-        p = partition(arr, low, high, pivot_method)
-        quick_sort(arr, low, p - 1, pivot_method)
-        quick_sort(arr, p + 1, high, pivot_method)
+        arr[low], arr[high] = arr[high], arr[low]  # สลับมาไว้ท้าย
+        p = partition(arr, low, high)
+        quick_sort_first(arr, low, p - 1)
+        quick_sort_first(arr, p + 1, high)
+```
 
-def partition(arr, low, high, pivot_method):
-    if pivot_method == 'first':
-        arr[low], arr[high] = arr[high], arr[low]
-    elif pivot_method == 'middle':
+## Pivot แบบที่ 2: Last Element (Lomuto)
+```python
+def quick_sort_last(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    if low < high:
+        p = partition(arr, low, high)  # ใช้ตัวท้ายเป็น pivot โดยตรง
+        quick_sort_last(arr, low, p - 1)
+        quick_sort_last(arr, p + 1, high)
+```
+
+## Pivot แบบที่ 3: Middle Element
+```python
+def quick_sort_middle(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    if low < high:
         mid = (low + high) // 2
-        arr[mid], arr[high] = arr[high], arr[mid]
-    elif pivot_method == 'random':
+        arr[mid], arr[high] = arr[high], arr[mid]  # นำค่ากลางมาไว้ท้าย
+        p = partition(arr, low, high)
+        quick_sort_middle(arr, low, p - 1)
+        quick_sort_middle(arr, p + 1, high)
+```
+
+## Pivot แบบที่ 4: Random Element
+```python
+import random
+
+def quick_sort_random(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    if low < high:
         rand = random.randint(low, high)
-        arr[rand], arr[high] = arr[high], arr[rand]
-    elif pivot_method == 'median3':
+        arr[rand], arr[high] = arr[high], arr[rand]  # สลับ random มาไว้ท้าย
+        p = partition(arr, low, high)
+        quick_sort_random(arr, low, p - 1)
+        quick_sort_random(arr, p + 1, high)
+```
+
+## Pivot แบบที่ 5: Median-of-Three
+```python
+def quick_sort_median3(arr, low=0, high=None):
+    if high is None:
+        high = len(arr) - 1
+    if low < high:
         mid = (low + high) // 2
         triple = [(arr[low], low), (arr[mid], mid), (arr[high], high)]
         triple.sort()
         median_idx = triple[1][1]
-        arr[median_idx], arr[high] = arr[high], arr[median_idx]
+        arr[median_idx], arr[high] = arr[high], arr[median_idx]  # median ไว้ท้าย
+        p = partition(arr, low, high)
+        quick_sort_median3(arr, low, p - 1)
+        quick_sort_median3(arr, p + 1, high)
+```
 
+## ฟังก์ชัน Partition (ใช้ร่วมกัน)
+```python
+def partition(arr, low, high):
     pivot = arr[high]
     i = low - 1
     for j in range(low, high):
@@ -85,10 +130,12 @@ def partition(arr, low, high, pivot_method):
             arr[i], arr[j] = arr[j], arr[i]
     arr[i+1], arr[high] = arr[high], arr[i+1]
     return i + 1
+```
 
-# Example
+## ตัวอย่างการใช้งาน
+```python
 data = [5, 3, 8, 4, 2]
-quick_sort(data, pivot_method='median3')
+quick_sort_median3(data)
 print(data)  # Output: [2, 3, 4, 5, 8]
 ```
 
