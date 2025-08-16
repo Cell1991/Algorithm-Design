@@ -50,7 +50,7 @@ j = 3 → 4 > 2 → ไม่ขยับ
 
 ## 4. โค๊ด Quick Sort – Pivot Strategies (แยกแต่ละแบบ)
 
-## Pivot แบบที่ 1: First Element
+### Pivot แบบที่ 1: First Element
 ```python
 def quick_sort_first(arr, low=0, high=None):
     if high is None:
@@ -62,7 +62,7 @@ def quick_sort_first(arr, low=0, high=None):
         quick_sort_first(arr, p + 1, high)
 ```
 
-## Pivot แบบที่ 2: Last Element (Lomuto)
+### Pivot แบบที่ 2: Last Element (Lomuto)
 ```python
 def quick_sort_last(arr, low=0, high=None):
     if high is None:
@@ -73,7 +73,7 @@ def quick_sort_last(arr, low=0, high=None):
         quick_sort_last(arr, p + 1, high)
 ```
 
-## Pivot แบบที่ 3: Middle Element
+### Pivot แบบที่ 3: Middle Element
 ```python
 def quick_sort_middle(arr, low=0, high=None):
     if high is None:
@@ -86,7 +86,7 @@ def quick_sort_middle(arr, low=0, high=None):
         quick_sort_middle(arr, p + 1, high)
 ```
 
-## Pivot แบบที่ 4: Random Element
+### Pivot แบบที่ 4: Random Element
 ```python
 import random
 
@@ -101,7 +101,7 @@ def quick_sort_random(arr, low=0, high=None):
         quick_sort_random(arr, p + 1, high)
 ```
 
-## Pivot แบบที่ 5: Median-of-Three
+### Pivot แบบที่ 5: Median-of-Three
 ```python
 def quick_sort_median3(arr, low=0, high=None):
     if high is None:
@@ -117,7 +117,7 @@ def quick_sort_median3(arr, low=0, high=None):
         quick_sort_median3(arr, p + 1, high)
 ```
 
-## ฟังก์ชัน Partition (ใช้ร่วมกัน)
+### ฟังก์ชัน Partition (ใช้ร่วมกัน)
 ```python
 def partition(arr, low, high):
     pivot = arr[high]
