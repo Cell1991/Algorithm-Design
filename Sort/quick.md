@@ -166,16 +166,31 @@ print(data)  # Output: [2, 3, 4, 5, 8]
 ## 7. Visualization (Pivot แบ่งกลุ่ม)
 
 ```
-[5, 3, 8, 4, 2]
-Pivot = 5
+Original Array: [5, 3, 8, 4, 2]
+เลือก Pivot = 2 (ตัวสุดท้าย)
 
-→ left = [3, 4, 2]  
-→ right = [8]
+1. เริ่ม Partition:  
+   เปรียบเทียบจากซ้ายไปขวาจนถึงก่อน Pivot  
+   ไม่มีตัวไหน ≤ 2 → ไม่มีการ swap
 
-→ QuickSort(left) = [2, 3, 4]  
-→ QuickSort(right) = [8]
+2. สลับ Pivot ไปอยู่ตำแหน่งแรก:  
+   [2, 3, 8, 4, 5] ← pivot (2) อยู่ตำแหน่งที่ถูกต้องแล้ว
 
-→ Result = [2, 3, 4] + [5] + [8] = ✅ [2, 3, 4, 5, 8]
+→ left = []  
+→ right = [3, 8, 4, 5]
+
+3. เรียก QuickSort ทางขวา:  
+   - pivot = 5  
+   - แบ่งได้เป็น left = [3, 4], right = [8]  
+   - เรียก QuickSort ซ้ำไป
+
+4. เมื่อเรียงครบทุกฝั่ง → รวมผลลัพธ์:
+
+→ QuickSort(left) = []  
+→ Pivot = 2  
+→ QuickSort(right) = [3, 4, 5, 8]
+
+✅ Result = [] + [2] + [3, 4, 5, 8] = [2, 3, 4, 5, 8]
 ```
 
 ---
