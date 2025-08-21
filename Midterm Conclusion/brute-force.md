@@ -19,7 +19,7 @@
 
 ## ⚡ Exhaustive Search
 
-**💡 Concept / Purpose:**  
+**💡 Concept / Purpose**  
 Exhaustive Search (หรือ Brute-force Search) เป็น **แนวคิดการแก้ปัญหาแบบตรงไปตรงมา**  
 โดยการ **ตรวจสอบทุกความเป็นไปได้** เพื่อหา solution ที่ถูกต้อง  
 
@@ -28,7 +28,7 @@ Exhaustive Search (หรือ Brute-force Search) เป็น **แนวค�
 - **✅ ข้อดี:** เข้าใจง่าย, implementation ไม่ซับซ้อน  
 - **⚠️ ข้อเสีย:** **ไม่ efficient** สำหรับปัญหาขนาดใหญ่  
 
-**🎯 Motivation / Why use it:**  
+**🎯 Motivation / Why use it**  
 - เหมาะสำหรับปัญหาที่ **ขนาดเล็ก** หรือจำนวนความเป็นไปได้จำกัด  
 - เป็นวิธี **baseline** เพื่อเปรียบเทียบ algorithm ที่ซับซ้อนกว่า  
 - ใช้ตรวจสอบ **correctness ของ solution**  
