@@ -310,8 +310,6 @@ Original Array: [5, 3, 8, 4, 2]
 - การ serialize/deserialize tree
 - การค้นหา / เรียงลำดับใน BST
 
----
-
 ## 2. Traversal Types & Visual Explanation
 
 เราจะใช้ต้นไม้ตัวอย่างนี้ในการอธิบาย (Root = A):
@@ -341,8 +339,6 @@ Original Array: [5, 3, 8, 4, 2]
 - กลับไป Root ไปขวา: Visit C → **[A, B, D, E, C]**
 - ไปขวาของ C: Visit F → **[A, B, D, E, C, F]**
 
----
-
 ### 🔸 Inorder Traversal (Left → Root → Right)
 
 1. ไปซ้ายสุด (D)
@@ -362,8 +358,6 @@ Original Array: [5, 3, 8, 4, 2]
 - ไปขวา A: C → **[D, B, E, A, C]**
 - ไปขวา C: F → **[D, B, E, A, C, F]**
 
----
-
 ### 🔸 Postorder Traversal (Left → Right → Root)
 
 1. ไปซ้ายสุด (D → E)
@@ -382,8 +376,6 @@ Original Array: [5, 3, 8, 4, 2]
 - กลับ C → **[D, E, B, F, C]**
 - สุดท้าย Root A → **[D, E, B, F, C, A]**
 
----
-
 ### 🔸 Level-order Traversal (Breadth-First, ใช้ Queue)
 
 1. เริ่มจาก Root (A)
@@ -397,8 +389,6 @@ Original Array: [5, 3, 8, 4, 2]
 - Level 1: B, C → **[A, B, C]**
 - Level 2: D, E, F → **[A, B, C, D, E, F]**
 
----
-
 ## 3. สรุปเปรียบเทียบการเดิน
 
 | Traversal  | ลำดับเยี่ยม |
@@ -408,16 +398,12 @@ Original Array: [5, 3, 8, 4, 2]
 | Postorder  | Left → Right → Root |
 | Levelorder | ทีละระดับ (ซ้าย → ขวา) |
 
----
-
 ## 4. ความซับซ้อน (Complexity)
 
 - ทุก traversal ใช้เวลา **O(n)** (ต้อง visit ทุก node)
 - Recursive → ใช้ stack ลึกสุด **O(h)** (h = ความสูงของ tree)
 - Iterative → ใช้ stack/queue **O(h) หรือ O(w)** (w = ความกว้างสูงสุด)
 - Morris Traversal → เวลา O(n), space O(1)
-
----
 
 ## 5. Python ตัวอย่างโค้ด
 
@@ -475,8 +461,6 @@ postorder(A, out); print("Postorder :", out)
 print("Levelorder:", level_order(A))
 ```
 
----
-
 ## 6. Properties ที่เกี่ยวข้อง
 
 - **Height (h):** ระยะทาง edge ยาวสุดจาก root ถึง leaf
@@ -498,8 +482,6 @@ print("Levelorder:", level_order(A))
 **ตัวอย่าง reconstruct (แนวคิด)**  
 * Preorder ให้ root เป็นตัวแรก → หา index ใน inorder แบ่ง left/right subtrees → ทำซ้ำแบบ recursive  
 
----
-
 ## 8. Related Properties ของ Binary Trees (สำคัญ)
 
 **นิยามพื้นฐาน**  
@@ -518,11 +500,9 @@ print("Levelorder:", level_order(A))
 * Diameter = max over nodes (height(left) + height(right))  
 * คำนวณแบบ O(n) โดยใช้ postorder (คืน height และปรับค่า diameter ระหว่าง traversal)  
 
----
-
 ## 9. Implementations — Python Examples
 
-** recursive, iterative, Morris สำหรับ inorder **
+* recursive, iterative, Morris สำหรับ inorder *
 
 ```python
 from collections import deque
