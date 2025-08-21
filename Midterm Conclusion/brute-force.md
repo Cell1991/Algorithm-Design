@@ -551,7 +551,7 @@ $$
 * เป็น **baseline** สำหรับ algorithm ที่เร็วกว่า เช่น Graham Scan, Jarvis March
 
 ---
-## 🗺️ Traveling Salesman Problem (TSP)
+## 🗺️ Traveling Salesman Problem
 
 ### 1. Concept
 
