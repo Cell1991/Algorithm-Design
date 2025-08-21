@@ -245,34 +245,579 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 ---
 
 ## 🔹 Sequential Search
-*(รายละเอียด Concept, Pseudocode, Python Example, Complexity, Use Case)*
+
+### 1. Concept
+**Sequential Search** (หรือ Linear Search) เป็น **อัลกอริทึมการค้นหาข้อมูลแบบง่าย**
+โดยทำการตรวจสอบแต่ละ element ในลิสต์ **เรียงลำดับทีละตัว** จนกว่าจะเจอ target หรือสิ้นสุดลิสต์
+
+- ลักษณะ: ตรวจสอบทีละ element ตามลำดับ
+- ประเภท: **Search Algorithm**
+- ความเสถียร: N/A (ผลลัพธ์ไม่เปลี่ยนลำดับของลิสต์)
+
+### 2. Algorithm Steps
+1. เริ่มจากตำแหน่งแรกของลิสต์
+2. เปรียบเทียบค่าปัจจุบันกับ target
+3. ถ้าเจอ target → return ตำแหน่ง
+4. ถ้าไม่เจอ → เลื่อนไปยัง element ถัดไป
+5. ทำซ้ำจนถึงตัวสุดท้ายของลิสต์
+6. ถ้าไม่เจอ target → return Not Found
+
+### 3. Pseudocode
+```
+procedure sequentialSearch(A, target)
+    for i ← 0 to length(A)-1 do
+        if A[i] = target then
+            return i
+    return -1  // Not found
+end procedure
+```
+
+### 4. Python Example
+```python
+def sequential_search(arr, target):
+    for i, value in enumerate(arr):
+        if value == target:
+            return i
+    return -1
+
+# Example usage
+data = [5, 3, 8, 4, 2]
+index = sequential_search(data, 4)
+print(index)  # Output: 3
+```
+
+### 5. Complexity Analysis
+| Case       | Time Complexity | Explanation                      |
+|------------|----------------|----------------------------------|
+| Best       | O(1)           | Target อยู่ตำแหน่งแรก           |
+| Average    | O(n)           | ต้องตรวจสอบประมาณครึ่งลิสต์   |
+| Worst      | O(n)           | Target อยู่ท้ายสุดหรือไม่มีในลิสต์ |
+| Space      | O(1)           | ใช้พื้นที่คงที่                  |
+
+### 6. Use Cases
+- ลิสต์ **ขนาดเล็ก** หรือไม่เรียงลำดับ  
+- ใช้เป็น **baseline** เปรียบเทียบกับ search algorithm ที่ซับซ้อนกว่า  
+- ตรวจสอบค่าที่ **จำนวนไม่มาก** และ **ไม่จำเป็นต้องเร็วมาก**
+
+### 7. Visualization (Search Step)
+#### Initial
+[5, 3, 8, 4, 2], target = 4
+
+#### Step 1
+Compare 5 → not target
+
+#### Step 2
+Compare 3 → not target
+
+#### Step 3
+Compare 8 → not target
+
+#### Step 4
+Compare 4 → found! ✅
 
 ---
 
 ## 🔹 Brute-force String Matching
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+
+### 1. Concept
+**Brute-force String Matching** เป็นวิธีการค้นหา **pattern** ภายใน **text** แบบตรงไปตรงมา  
+โดยตรวจสอบทุกตำแหน่งที่เป็นไปได้ของ text ว่าตรงกับ pattern หรือไม่  
+
+- ลักษณะ: ตรวจสอบทุกตำแหน่งทีละตัวจนกว่าจะเจอ match  
+- ประเภท: **String Search Algorithm**  
+- ความเสถียร: N/A  
+
+### 2. Algorithm Steps
+1. เริ่มจากตำแหน่งแรกของ text  
+2. เปรียบเทียบ pattern กับ substring ของ text ขนาดเท่ากัน  
+3. ถ้า match → return ตำแหน่ง  
+4. ถ้าไม่ match → เลื่อนตำแหน่งใน text ไปทีละ 1  
+5. ทำซ้ำจนถึงตัวสุดท้ายของ text หรือเจอ match  
+
+### 3. Pseudocode
+```
+procedure bruteForceStringMatch(text, pattern)
+    n ← length(text)
+    m ← length(pattern)
+    
+    for i ← 0 to n - m do
+        match ← true
+        for j ← 0 to m - 1 do
+            if text[i+j] != pattern[j] then
+                match ← false
+                break
+        if match = true then
+            return i  // Match found
+    return -1  // Not found
+end procedure
+```
+
+### 4. Python Example
+```python
+def brute_force_string_match(text, pattern):
+    n = len(text)
+    m = len(pattern)
+    
+    for i in range(n - m + 1):
+        match = True
+        for j in range(m):
+            if text[i + j] != pattern[j]:
+                match = False
+                break
+        if match:
+            return i
+    return -1
+
+# Example usage
+text = "hello world"
+pattern = "world"
+index = brute_force_string_match(text, pattern)
+print(index)  # Output: 6
+```
+
+### 5. Complexity Analysis
+| Case       | Time Complexity | Explanation                         |
+|------------|----------------|-------------------------------------|
+| Best       | O(n)           | Pattern เจอตำแหน่งแรกทันที         |
+| Average    | O((n-m+1)*m)   | ตรวจสอบหลายตำแหน่งและหลายตัว      |
+| Worst      | O((n-m+1)*m)   | Pattern ไม่พบ ต้องตรวจทุกตำแหน่ง   |
+| Space      | O(1)           | ใช้พื้นที่คงที่                     |
+
+### 6. Use Cases
+- **Pattern ขนาดเล็ก** ใน text ขนาดเล็กถึงกลาง  
+- ใช้ **baseline** เปรียบเทียบกับ string matching algorithm ที่ซับซ้อนกว่า เช่น KMP หรือ Boyer-Moore  
+- ตรวจสอบ **correctness** ของ pattern matching  
+
+
+### 7. Visualization (Matching Step)
+#### Text
+"hello world"
+#### Pattern
+"world"
+
+- Step 1: Compare text[0:5] "hello" → not match
+- Step 2: Compare text[1:6] "ello " → not match
+- Step 3: Compare text[2:7] "llo w" → not match
+- Step 4: Compare text[3:8] "lo wo" → not match
+- Step 5: Compare text[4:9] "o wor" → not match
+- Step 6: Compare text[5:10] " worl" → not match
+- Step 7: Compare text[6:11] "world" → found! ✅
 
 ---
 
-## 🔹 Closest-pair and Convex-hull Problems
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+## 🔹 Closest-Pair and Convex-Hull Problems
+
+### 1. Concept
+**Closest-Pair Problem**: หา **คู่จุดที่ใกล้ที่สุด**ในชุดของจุด 2D  
+**Convex-Hull Problem**: หา **polygon convex** ที่ครอบจุดทั้งหมดในชุด โดยมีพื้นที่น้อยที่สุดและไม่เว้าเข้าไปด้านใน  
+
+- ลักษณะ: **Combinatorial / Geometric Problems**  
+- ประเภท: **Computational Geometry**  
+- ใช้ Brute-force ได้ แต่สำหรับจำนวนจุดเยอะจะไม่ efficient  
+
+### 2. Brute-force Approach
+
+#### Closest-Pair
+1. ตรวจสอบ **ทุกคู่จุด**  
+2. คำนวณระยะระหว่างจุดแต่ละคู่ (Euclidean Distance)  
+3. เก็บค่าที่เล็กที่สุด  
+
+#### Convex-Hull
+1. ตรวจสอบ **ทุก subset ของจุด**  
+2. หาค่าที่สามารถสร้าง polygon convex ครอบจุดทั้งหมด  
+3. เลือก polygon ที่มี perimeter หรือ area น้อยที่สุด  
+
+### 3. Pseudocode (Closest-Pair)
+```
+procedure closestPair(points)
+    min_distance ← ∞
+    n ← length(points)
+    for i ← 0 to n-2 do
+        for j ← i+1 to n-1 do
+            d ← distance(points[i], points[j])
+            if d < min_distance then
+                min_distance ← d
+                pair ← (points[i], points[j])
+    return pair, min_distance
+end procedure
+```
+
+### 4. Python Example (Closest-Pair)
+```python
+import math
+
+def distance(p1, p2):
+    return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
+
+def closest_pair(points):
+    min_dist = float('inf')
+    pair = None
+    n = len(points)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            d = distance(points[i], points[j])
+            if d < min_dist:
+                min_dist = d
+                pair = (points[i], points[j])
+    return pair, min_dist
+
+# Example usage
+points = [(2,3),(12,30),(40,50),(5,1),(12,10),(3,4)]
+pair, dist = closest_pair(points)
+print(pair, dist)
+```
+
+### 5. Complexity Analysis
+| Problem    | Approach       | Time Complexity | Space Complexity |
+|------------|----------------|----------------|-----------------|
+| Closest-Pair | Brute-force   | O(n²)          | O(1)            |
+| Convex-Hull  | Brute-force   | O(n*2^n)       | O(n)            |
+
+### 6. Use Cases
+- Computational geometry problem ขนาด **เล็กถึงกลาง**  
+- ใช้ **baseline** เปรียบเทียบกับ algorithm ที่ซับซ้อน เช่น Divide-and-Conquer หรือ Graham Scan  
+- ตรวจสอบ **correctness** ของ solution สำหรับจำนวนจุดไม่มาก  
+
+### 7. Visualization (Closest-Pair)
+#### Points
+[(2,3),(12,30),(40,50),(5,1),(12,10),(3,4)]
+
+- Step 1: Compare (2,3)-(12,30) → distance 28.03  
+- Step 2: Compare (2,3)-(40,50) → distance 56.87  
+- Step 3: Compare (2,3)-(5,1) → distance 3.61 ✅ (current closest)  
+- Step 4: Continue untilทุกคู่เสร็จ → Final closest pair = (2,3)-(3,4)
 
 ---
 
 ## 🗺️ Traveling Salesman Problem (TSP)
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+
+### 1. Concept
+**Traveling Salesman Problem (TSP)** คือปัญหาในการหา **เส้นทางสั้นที่สุด** ที่ผู้ขายสินค้าจะต้องเยี่ยมชมทุกเมือง **ครั้งเดียว** และกลับมาที่เมืองเริ่มต้น  
+
+- ลักษณะ: **Combinatorial Optimization Problem**  
+- ประเภท: **NP-Hard Problem**  
+- ใช้ Brute-force ได้ แต่สำหรับเมืองจำนวนมากไม่ practical  
+
+### 2. Brute-force Approach
+1. สร้าง **ทุก permutation ของเมือง**  
+2. คำนวณระยะทางรวมของแต่ละ permutation  
+3. เลือก permutation ที่มีระยะทางรวมสั้นที่สุด  
+
+### 3. Pseudocode
+```
+procedure TSP_BruteForce(cities, distanceMatrix)
+    best_distance ← ∞
+    best_route ← null
+    for each permutation p of cities do
+        d ← totalDistance(p, distanceMatrix)
+        if d < best_distance then
+            best_distance ← d
+            best_route ← p
+    return best_route, best_distance
+end procedure
+```
+
+### 4. Python Example
+```python
+import itertools
+
+def total_distance(route, distance_matrix):
+    dist = 0
+    n = len(route)
+    for i in range(n-1):
+        dist += distance_matrix[route[i]][route[i+1]]
+    dist += distance_matrix[route[-1]][route[0]]  # return to start
+    return dist
+
+def tsp_bruteforce(distance_matrix):
+    n = len(distance_matrix)
+    cities = list(range(n))
+    min_dist = float('inf')
+    best_route = None
+    for perm in itertools.permutations(cities):
+        d = total_distance(perm, distance_matrix)
+        if d < min_dist:
+            min_dist = d
+            best_route = perm
+    return best_route, min_dist
+
+# Example usage
+distance_matrix = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+route, dist = tsp_bruteforce(distance_matrix)
+print(route, dist)
+```
+
+### 5. Complexity Analysis
+| Case       | Time Complexity | Explanation                          |
+|------------|----------------|--------------------------------------|
+| Brute-force| O(n!)          | ตรวจทุก permutation ของ n เมือง     |
+| Space      | O(n)           | เก็บ route ปัจจุบันและดีที่สุด       |
+
+### 6. Use Cases
+- เหมาะสำหรับ **จำนวนเมืองน้อย** (n ≤ 10)  
+- ใช้เป็น **baseline** สำหรับเปรียบเทียบ heuristic/approximation methods เช่น **Nearest Neighbor**, **Genetic Algorithm**, **Dynamic Programming**  
+- ใช้ใน **Logistics, Route Planning** และ **Optimization Research**  
+
+### 7. Visualization (Example)
+#### Cities
+0, 1, 2, 3  
+#### Distance Matrix
+```
+0 10 15 20
+10 0 35 25
+15 35 0 30
+20 25 30 0
+```
+- Step 1: Consider route (0,1,2,3,0) → distance 10+35+30+20=95  
+- Step 2: Consider route (0,1,3,2,0) → distance 10+25+30+15=80 ✅  
+- Continue forทุก permutation → Best route = (0,1,3,2,0)
+
+
 
 ---
 
 ## 🎒 Knapsack Problem
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+
+### 1. Concept
+**Knapsack Problem** เป็นปัญหาในการเลือกชุดของ items ที่มีน้ำหนักและมูลค่า เพื่อให้ใส่ใน **กระเป๋าที่มีน้ำหนักจำกัด** แล้วได้ **มูลค่าสูงสุด**  
+
+- ลักษณะ: **Combinatorial Optimization Problem**  
+- ประเภท: **NP-Hard Problem** (สำหรับ 0/1 Knapsack)  
+- สามารถแก้แบบ Brute-force ได้ แต่ไม่ practical สำหรับจำนวน items มาก  
+
+### 2. Brute-force Approach
+1. สร้าง **ทุก subset ของ items**  
+2. ตรวจสอบว่า subset นั้น **ไม่เกินน้ำหนักสูงสุด**  
+3. คำนวณมูลค่ารวมของ subset  
+4. เลือก subset ที่ให้มูลค่าสูงสุด  
+
+### 3. Pseudocode
+```
+procedure Knapsack_BruteForce(items, maxWeight)
+    best_value ← 0
+    best_subset ← null
+    for each subset S of items do
+        totalWeight ← sum(weights in S)
+        totalValue ← sum(values in S)
+        if totalWeight ≤ maxWeight and totalValue > best_value then
+            best_value ← totalValue
+            best_subset ← S
+    return best_subset, best_value
+end procedure
+```
+
+### 4. Python Example
+```python
+import itertools
+
+def knapsack_bruteforce(weights, values, max_weight):
+    n = len(weights)
+    best_value = 0
+    best_subset = None
+    for r in range(n+1):
+        for subset in itertools.combinations(range(n), r):
+            total_weight = sum(weights[i] for i in subset)
+            total_value = sum(values[i] for i in subset)
+            if total_weight <= max_weight and total_value > best_value:
+                best_value = total_value
+                best_subset = subset
+    return best_subset, best_value
+
+# Example usage
+weights = [2, 3, 4, 5]
+values = [3, 4, 5, 6]
+max_weight = 5
+subset, value = knapsack_bruteforce(weights, values, max_weight)
+print(subset, value)  # Output: (1, 0) 7
+```
+
+### 5. Complexity Analysis
+| Case       | Time Complexity | Explanation                                      |
+|------------|----------------|-------------------------------------------------|
+| Brute-force| O(2^n)         | ตรวจทุก subset ของ n items                     |
+| Space      | O(n)           | เก็บ subset ปัจจุบันและดีที่สุด               |
+
+### 6. Use Cases
+- เหมาะสำหรับ **จำนวน items น้อย**  
+- ใช้เป็น **baseline** สำหรับเปรียบเทียบ dynamic programming หรือ heuristic methods  
+- ใช้ใน **Resource Allocation, Budgeting, Logistics Optimization**  
+
+### 7. Notes
+- สำหรับ **Fractional Knapsack** สามารถใช้ **Greedy approach** แทน Brute-force ได้
 
 ---
 
 ## 📝 Assignment Problem
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+
+### 1. Concept
+**Assignment Problem** เป็นปัญหาในการมอบหมายงาน (tasks) ให้กับผู้ทำงาน (agents) โดยให้ได้ **ค่าใช้จ่ายรวมต่ำสุด** หรือ **ผลประโยชน์รวมสูงสุด**  
+
+- ลักษณะ: **Combinatorial Optimization Problem**  
+- ประเภท: **Linear Assignment Problem / Matching Problem**  
+- สำหรับจำนวนงานเล็ก ๆ สามารถแก้แบบ brute-force แต่จำนวนมากควรใช้ **Hungarian Algorithm** หรือ **Linear Programming**  
+
+### 2. Brute-force Approach
+1. สร้าง **ทุก permutation ของ assignment**  
+2. คำนวณค่าใช้จ่ายรวมสำหรับแต่ละ permutation  
+3. เลือก assignment ที่ได้ **ค่าใช้จ่ายต่ำสุด**  
+
+### 3. Pseudocode
+```
+procedure Assignment_BruteForce(costMatrix)
+    n ← number of tasks
+    best_cost ← ∞
+    best_assignment ← null
+    for each permutation p of tasks do
+        cost ← sum(costMatrix[i][p[i]] for i=1 to n)
+        if cost < best_cost then
+            best_cost ← cost
+            best_assignment ← p
+    return best_assignment, best_cost
+end procedure
+```
+
+### 4. Python Example
+```python
+import itertools
+
+def assignment_bruteforce(cost_matrix):
+    n = len(cost_matrix)
+    min_cost = float('inf')
+    best_assignment = None
+    for perm in itertools.permutations(range(n)):
+        cost = sum(cost_matrix[i][perm[i]] for i in range(n))
+        if cost < min_cost:
+            min_cost = cost
+            best_assignment = perm
+    return best_assignment, min_cost
+
+# Example usage
+cost_matrix = [
+    [9, 2, 7],
+    [6, 4, 3],
+    [5, 8, 1]
+]
+assignment, cost = assignment_bruteforce(cost_matrix)
+print(assignment, cost)  # Output: (1, 2, 0) 9
+```
+
+### 5. Complexity Analysis
+| Case       | Time Complexity | Explanation                              |
+|------------|----------------|------------------------------------------|
+| Brute-force| O(n!)          | ตรวจทุก permutation ของ n งาน           |
+| Space      | O(n)           | เก็บ assignment ปัจจุบันและดีที่สุด     |
+
+### 6. Use Cases
+- เหมาะสำหรับ **จำนวนงานและผู้ทำงานน้อย**  
+- ใช้เป็น **baseline** สำหรับเปรียบเทียบ **Hungarian Algorithm**  
+- ใช้ใน **งาน Scheduling, Resource Allocation, Task Assignment**
 
 ---
 
 ## 🌳 Depth-First Search (DFS) and Breadth-First Search (BFS)
-*(รายละเอียด Concept, Steps, Example, Complexity)*
+
+### 1. Concept
+**DFS** และ **BFS** เป็น **graph traversal algorithms** ใช้สำหรับ **สำรวจ nodes ของ graph** หรือ **tree**
+
+- **DFS (Depth-First Search)**: เดินลึกไปตาม branch หนึ่งจนสุดแล้วค่อย backtrack
+- **BFS (Breadth-First Search)**: เดินระดับต่อระดับ (level by level) จาก root node
+- ลักษณะ: ใช้ **graph representation** (adjacency list หรือ adjacency matrix)
+- ประเภท: Graph Traversal / Search Algorithm
+
+### 2. Algorithm Steps
+#### DFS (Recursive)
+1. เริ่มจาก node เริ่มต้น
+2. ทำเครื่องหมาย node ว่า **visited**
+3. สำหรับทุก neighbor ที่ยังไม่ visited, เรียก DFS recursively
+
+#### BFS
+1. เริ่มจาก node เริ่มต้น
+2. ใช้ **queue** เก็บ nodes ที่จะสำรวจ
+3. Dequeue node ปัจจุบัน, ทำเครื่องหมาย visited
+4. Enqueue neighbor ทั้งหมดที่ยังไม่ visited
+5. ทำซ้ำจน queue ว่าง
+
+### 3. Pseudocode
+#### DFS Recursive
+```
+procedure DFS(node):
+    mark node as visited
+    for each neighbor of node do
+        if neighbor not visited then
+            DFS(neighbor)
+```
+
+#### BFS
+```
+procedure BFS(startNode):
+    create empty queue Q
+    enqueue startNode to Q
+    mark startNode as visited
+    while Q not empty do
+        node ← dequeue Q
+        for each neighbor of node do
+            if neighbor not visited then
+                enqueue neighbor to Q
+                mark neighbor as visited
+```
+
+### 4. Python Example
+```python
+# DFS
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    print(start, end=' ')
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited)
+    return visited
+
+# BFS
+from collections import deque
+
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+    while queue:
+        node = queue.popleft()
+        print(node, end=' ')
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+# Example usage
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+print("DFS:")
+dfs(graph, 'A')  # Output: A B D E F C
+print("\nBFS:")
+bfs(graph, 'A')  # Output: A B C D E F
+```
+
+### 5. Complexity Analysis
+| Algorithm | Time Complexity | Space Complexity |
+|-----------|----------------|----------------|
+| DFS       | O(V + E)       | O(V) (recursion stack) |
+| BFS       | O(V + E)       | O(V) (queue)   |
+
+> V = number of vertices, E = number of edges
+
+### 6. Use Cases
+- **DFS**: Topological Sorting, Cycle Detection, Path Finding, Maze Solving
+- **BFS**: Shortest Path (unweighted graph), Level-order traversal, Social network connections
