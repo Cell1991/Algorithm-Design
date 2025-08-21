@@ -1002,50 +1002,50 @@ coins = list(range(1,10))
 
 ### 1. Concept / Purpose
 
-* Russian Peasant Multiplication เป็น **algorithm สำหรับคูณตัวเลขสองจำนวน** โดยใช้การ **halve และ double**
-* หลักการ: ลดการคูณใหญ่เป็นการบวกและการหารแบบง่าย ๆ
-* ใช้แนวคิด **binary representation** ของตัวเลข
+* Russian Peasant Multiplication เป็น **multiplication algorithm** แบบดั้งเดิม
+* วัตถุประสงค์: คำนวณ a \* b โดยใช้ **halving, doubling, และ addition**
+* แนวคิดหลัก: **Decrease by a constant factor** → ลด b ครึ่งหนึ่งทีละรอบ
 
 ### 2. Motivation / Why use it
 
-* ต้องการวิธีคูณแบบ efficient โดยไม่ใช้ multiplication operator
-* ใช้งานได้ใน computing, embedded systems, หรือเมื่อคูณด้วยมือ
-* เหมาะสำหรับการสอนวิธีคิดแบบ binary และ algorithmic thinking
+* ต้องการ multiplication แบบ **efficient** โดยไม่ต้องใช้ multiply operator
+* เหมาะสำหรับ **historical method, teaching binary representation, algorithm practice**
 
 ### 3. Complexity Analysis
 
-| Aspect | Complexity                        |
-| ------ | --------------------------------- |
-| Time   | O(log b) (b = ตัวเลขที่ถูก halve) |
-| Space  | O(1) iterative                    |
+| Aspect | Complexity |
+| ------ | ---------- |
+| Time   | O(log b)   |
+| Space  | O(1)       |
 
 ### 4. Use Cases
 
-* Multiplication without using \* operator
-* Teaching binary representation and algorithmic thinking
-* Embedded or low-level computing
+* Educational example for binary multiplication
+* Teaching divide-by-constant-factor algorithms
+* Simulation of historical multiplication methods
 
 ### 5. Principle / How it works
 
 * **หลักการคิด:**
 
-  1. เขียนเลขสองจำนวน a และ b
-  2. ทำการ halve ตัวเลขหนึ่ง (b) และ double อีกตัว (a)
-  3. ถ้า b เป็นเลขคี่ ให้จด a ไว้
-  4. ทำซ้ำจน b = 0
-  5. บวกเลขทั้งหมดที่จดไว้ → ผลลัพธ์การคูณ
-* ใช้ **bit manipulation** และการบวกแทนการคูณตรง ๆ
+  1. เขียน a และ b ในตาราง
+  2. **Halve b** ลงครึ่งหนึ่ง (floor division), **double a**
+  3. ถ้า b เป็นเลขคี่ → **บันทึก a**
+  4. ทำซ้ำจน b = 1
+  5. **ผลลัพธ์คือ sum ของค่า a ที่บันทึก**
 
 ### 6. Example
 
 * a = 18, b = 25
-  \| a (double) | b (halve) | Record a if b odd |
-  \|------------|------------|-----------------|
-  \| 18         | 25         | 18              |
-  \| 36         | 12         |                 |
-  \| 72         | 6          |                 |
-  \| 144        | 3          | 144             |
-  \| 288        | 1          | 288             |
+
+| a (double) | b (halve) | Record a if b odd |
+| ---------- | --------- | ----------------- |
+| 18         | 25        | 18                |
+| 36         | 12        |                   |
+| 72         | 6         |                   |
+| 144        | 3         | 144               |
+| 288        | 1         | 288               |
+
 * Sum of recorded a: 18 + 144 + 288 = 450 → 18 \* 25 = 450
 
 ### 7. Pseudocode
@@ -1054,7 +1054,7 @@ coins = list(range(1,10))
 procedure RussianPeasantMultiplication(a, b):
     result = 0
     while b > 0:
-        if b is odd:
+        if b % 2 != 0:
             result += a
         a = a * 2
         b = b // 2
@@ -1064,10 +1064,10 @@ procedure RussianPeasantMultiplication(a, b):
 ### 8. Python Example
 
 ```python
-def russian_peasant(a, b):
+def russian_peasant_multiplication(a, b):
     result = 0
     while b > 0:
-        if b % 2 == 1:
+        if b % 2 != 0:
             result += a
         a *= 2
         b //= 2
@@ -1075,7 +1075,7 @@ def russian_peasant(a, b):
 
 # Example usage
 a, b = 18, 25
-print(russian_peasant(a, b))  # Output: 450
+print(russian_peasant_multiplication(a, b))  # Output: 450
 ```
 
 ---
