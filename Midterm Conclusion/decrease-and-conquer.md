@@ -508,7 +508,7 @@ minimal_change_permutation([1,2,3])
 
 ---
 
-## 🧩 Johnson-Trotter Algorithm
+## 🔸 Johnson-Trotter Algorithm
 
 ### 1. Concept / Purpose
 
