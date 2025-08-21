@@ -30,7 +30,7 @@
 🔹 [Lomuto Partitioning](#-lomuto-partitioning)  
 🔹 [Quick Select](#-quick-select)  
 🔹 [Interpolation Search](#-interpolation-search)  
-🌳 [Binary Search Tree](#-binary-search-tree)
+🌳 [Binary Search Tree (BST)](#-binary-search-tree-bst)
 
 ---
 ## 🔹 Greatest Common Divisor (GCD)
