@@ -795,7 +795,7 @@ print("Divide & Conquer:", closest_pair_dc(points))
 
 ---
 
-## 🔹 Convex-Hull Problem (Computational Geometry)
+## 💎 Convex-Hull Problem 
 
 ### 1. Concept / Purpose
 
