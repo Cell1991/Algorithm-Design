@@ -301,16 +301,16 @@ Original Array: [5, 3, 8, 4, 2]
 
 ---
 
-# 🔹 Binary Tree Traversals and Related Properties
+## 🔹 Binary Tree Traversals and Related Properties
 
-## 1. Concept / Purpose
+### 1. Concept / Purpose
 การ Traversal หมายถึงการเดินไปตาม node ของต้นไม้ (Binary Tree) เพื่อเข้าถึงทุก node อย่างเป็นระบบและมีลำดับที่แน่นอน  
 เป็นพื้นฐานสำหรับงานต่าง ๆ เช่น:
 - การประเมินค่า expression (Expression Tree)
 - การ serialize/deserialize tree
 - การค้นหา / เรียงลำดับใน BST
 
-## 2. Traversal Types & Visual Explanation
+### 2. Traversal Types & Visual Explanation
 
 เราจะใช้ต้นไม้ตัวอย่างนี้ในการอธิบาย (Root = A):
 
@@ -389,7 +389,7 @@ Original Array: [5, 3, 8, 4, 2]
 - Level 1: B, C → **[A, B, C]**
 - Level 2: D, E, F → **[A, B, C, D, E, F]**
 
-## 3. สรุปเปรียบเทียบการเดิน
+### 3. สรุปเปรียบเทียบการเดิน
 
 | Traversal  | ลำดับเยี่ยม |
 |------------|-------------|
@@ -398,14 +398,14 @@ Original Array: [5, 3, 8, 4, 2]
 | Postorder  | Left → Right → Root |
 | Levelorder | ทีละระดับ (ซ้าย → ขวา) |
 
-## 4. ความซับซ้อน (Complexity)
+### 4. ความซับซ้อน (Complexity)
 
 - ทุก traversal ใช้เวลา **O(n)** (ต้อง visit ทุก node)
 - Recursive → ใช้ stack ลึกสุด **O(h)** (h = ความสูงของ tree)
 - Iterative → ใช้ stack/queue **O(h) หรือ O(w)** (w = ความกว้างสูงสุด)
 - Morris Traversal → เวลา O(n), space O(1)
 
-## 5. Python ตัวอย่างโค้ด
+### 5. Python ตัวอย่างโค้ด
 
 ```python
 from collections import deque
@@ -461,7 +461,7 @@ postorder(A, out); print("Postorder :", out)
 print("Levelorder:", level_order(A))
 ```
 
-## 6. Properties ที่เกี่ยวข้อง
+### 6. Properties ที่เกี่ยวข้อง
 
 - **Height (h):** ระยะทาง edge ยาวสุดจาก root ถึง leaf
 - **Depth:** ระยะทางจาก root ถึง node
@@ -472,7 +472,7 @@ print("Levelorder:", level_order(A))
   - สำหรับ full/proper tree: L (leaf) = I (internal) + 1
 - **Diameter:** ค่าที่ยาวที่สุดของ path ระหว่างสอง node ใด ๆ (คำนวณ O(n) ด้วย postorder)
 
-## 7. Traversal → Reconstruction (uniqueness)
+### 7. Traversal → Reconstruction (uniqueness)
 
 * Inorder + Preorder → **unique** binary tree (เมื่อ keys distinct)  
 * Inorder + Postorder → **unique** binary tree (เมื่อ keys distinct)  
@@ -482,7 +482,7 @@ print("Levelorder:", level_order(A))
 **ตัวอย่าง reconstruct (แนวคิด)**  
 * Preorder ให้ root เป็นตัวแรก → หา index ใน inorder แบ่ง left/right subtrees → ทำซ้ำแบบ recursive  
 
-## 8. Related Properties ของ Binary Trees (สำคัญ)
+### 8. Related Properties ของ Binary Trees (สำคัญ)
 
 **นิยามพื้นฐาน**  
 * Height (h): จำนวน edges จาก root ถึง leaf ที่ลึกที่สุด  
@@ -500,7 +500,7 @@ print("Levelorder:", level_order(A))
 * Diameter = max over nodes (height(left) + height(right))  
 * คำนวณแบบ O(n) โดยใช้ postorder (คืน height และปรับค่า diameter ระหว่าง traversal)  
 
-## 9. Implementations — Python Examples
+### 9. Implementations — Python Examples
 
 * recursive, iterative, Morris สำหรับ inorder *
 
