@@ -551,6 +551,106 @@ $$
 * เป็น **baseline** สำหรับ algorithm ที่เร็วกว่า เช่น Graham Scan, Jarvis March
 
 ---
+## 🗺️ Traveling Salesman Problem (TSP)
+
+### 1. Concept
+
+**Traveling Salesman Problem (TSP)** คือปัญหาในการหา **เส้นทางสั้นที่สุด** ที่ผู้ขายสินค้าจะต้องเยี่ยมชมทุกเมือง **ครั้งเดียว** และกลับมาที่เมืองเริ่มต้น
+
+* ลักษณะ: **Combinatorial Optimization Problem**
+* ประเภท: **NP-Hard Problem**
+* ใช้ Brute-force ได้ แต่สำหรับเมืองจำนวนมากไม่ practical
+
+### 2. Brute-force Approach
+
+1. สร้าง **ทุก permutation ของเมือง**
+2. คำนวณระยะทางรวมของแต่ละ permutation
+3. เลือก permutation ที่มีระยะทางรวมสั้นที่สุด
+
+### 3. Pseudocode
+
+```
+procedure TSP_BruteForce(cities, distanceMatrix)
+    best_distance ← ∞
+    best_route ← null
+    for each permutation p of cities do
+        d ← totalDistance(p, distanceMatrix)
+        if d < best_distance then
+            best_distance ← d
+            best_route ← p
+    return best_route, best_distance
+end procedure
+```
+
+### 4. Python Example
+
+```python
+import itertools
+
+def total_distance(route, distance_matrix):
+    dist = 0
+    n = len(route)
+    for i in range(n-1):
+        dist += distance_matrix[route[i]][route[i+1]]
+    dist += distance_matrix[route[-1]][route[0]]  # return to start
+    return dist
+
+def tsp_bruteforce(distance_matrix):
+    n = len(distance_matrix)
+    cities = list(range(n))
+    min_dist = float('inf')
+    best_route = None
+    for perm in itertools.permutations(cities):
+        d = total_distance(perm, distance_matrix)
+        if d < min_dist:
+            min_dist = d
+            best_route = perm
+    return best_route, min_dist
+
+# Example usage
+distance_matrix = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+route, dist = tsp_bruteforce(distance_matrix)
+print(route, dist)
+```
+
+### 5. Complexity Analysis
+
+| Case        | Time Complexity | Explanation                     |
+| ----------- | --------------- | ------------------------------- |
+| Brute-force | O(n!)           | ตรวจทุก permutation ของ n เมือง |
+| Space       | O(n)            | เก็บ route ปัจจุบันและดีที่สุด  |
+
+### 6. Use Cases
+
+* เหมาะสำหรับ **จำนวนเมืองน้อย** (n ≤ 10)
+* ใช้เป็น **baseline** สำหรับเปรียบเทียบ heuristic/approximation methods เช่น **Nearest Neighbor**, **Genetic Algorithm**, **Dynamic Programming**
+* ใช้ใน **Logistics, Route Planning** และ **Optimization Research**
+
+### 7. Visualization (Example)
+
+#### Cities
+
+0, 1, 2, 3
+
+#### Distance Matrix
+
+```
+0 10 15 20
+10 0 35 25
+15 35 0 30
+20 25 30 0
+```
+
+* Step 1: Consider route (0,1,2,3,0) → distance 10+35+30+20=95
+* Step 2: Consider route (0,1,3,2,0) → distance 10+25+30+15=80 ✅
+* Continue forทุก permutation → Best route = (0,1,3,2,0)
+
+---
 
 ## 🎒 Knapsack Problem
 
