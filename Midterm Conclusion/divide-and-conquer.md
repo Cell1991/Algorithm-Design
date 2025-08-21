@@ -795,7 +795,7 @@ print("Divide & Conquer:", closest_pair_dc(points))
 
 ---
 
-## 💎 Convex-Hull Problem
+## 🔹 Convex-Hull Problem (Computational Geometry)
 
 ### 1. Concept / Purpose
 
@@ -803,9 +803,9 @@ Convex-Hull คือ **รูปหลายเหลี่ยม convex เล
 
 เป็นพื้นฐานของงานด้าน computational geometry เช่น:
 
-* Collision detection
-* Shape analysis / pattern recognition
-* Path planning และ GIS
+* การตรวจจับการชน (Collision detection)
+* การวิเคราะห์รูปทรง / การรู้จำรูปแบบ (Pattern recognition)
+* การวางแผนเส้นทางและ GIS
 
 ---
 
@@ -814,7 +814,7 @@ Convex-Hull คือ **รูปหลายเหลี่ยม convex เล
 * **Input:** ชุดของ n จุด $P = \{p_1, p_2, ..., p_n\}$ ใน 2D
 * **Output:** ชุดจุดที่สร้าง **Convex Hull** ล้อมรอบทุกจุดใน P
 
-**Visual Idea:**
+**ตัวอย่างแนวคิดภาพรวม:**
 
 ```
 Y
@@ -845,35 +845,35 @@ Y
 
 1. **Graham’s Scan:**
 
-   * Sort points by polar angle from pivot (lowest y-coordinate)
-   * Push points onto stack, check turn direction (cross product)
+   * จัดเรียงจุดตามมุมโพลาร์จาก pivot (จุด y ต่ำสุด)
+   * เพิ่มจุดลง stack ตรวจสอบทิศทางการหมุน (cross product)
 2. **Jarvis March (Gift Wrapping):**
 
-   * Start from leftmost point
-   * Wrap around by selecting next point with minimal polar angle
-   * Complexity O(nh) (h = number of hull points)
+   * เริ่มจากจุดซ้ายสุด
+   * เลือกจุดต่อไปที่มุมโพลาร์น้อยที่สุด ทำซ้ำจนวนรอบ
+   * ความซับซ้อน O(nh) (h = จำนวนจุดบน hull)
 3. **Divide & Conquer:**
 
-   * Split points → compute hull left/right → merge
-   * Complexity O(n log n)
+   * แบ่งจุด → คำนวณ hull ซ้าย/ขวา → รวมกัน
+   * ความซับซ้อน O(n log n)
 
 **Key Operations:**
 
-* Cross product to determine orientation (left-turn, right-turn)
+* ใช้ cross product เพื่อตรวจสอบทิศทาง (เลี้ยวซ้าย, เลี้ยวขวา)
 
 ---
 
 ### 5. Orientation & Cross Product
 
-Given three points $p, q, r$:
+สำหรับจุดสามจุด $p, q, r$:
 
 $$
 \text{orientation} = (q_x - p_x)(r_y - p_y) - (q_y - p_y)(r_x - p_x)
 $$
 
-* > 0 → left turn
-* \=0 → collinear
-* <0 → right turn
+* > 0 → เลี้ยวซ้าย
+* \=0 → อยู่บนเส้นตรงเดียวกัน
+* <0 → เลี้ยวขวา
 
 ---
 
@@ -884,28 +884,28 @@ def cross(o, a, b):
     return (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0])
 
 def graham_scan(points):
-    points = sorted(set(points))  # remove duplicates
+    points = sorted(set(points))  # ลบจุดซ้ำ
     if len(points) <= 1:
         return points
     
-    # Build lower hull
+    # สร้าง lower hull
     lower = []
     for p in points:
         while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
             lower.pop()
         lower.append(p)
     
-    # Build upper hull
+    # สร้าง upper hull
     upper = []
     for p in reversed(points):
         while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
             upper.pop()
         upper.append(p)
     
-    # Concatenate lower and upper hull (excluding duplicates)
+    # รวม lower และ upper hull (ไม่รวมจุดซ้ำ)
     return lower[:-1] + upper[:-1]
 
-# Example
+# ตัวอย่าง
 points = [(0,0), (1,1), (2,2), (2,0), (1,-1), (0,2)]
 hull = graham_scan(points)
 print("Convex Hull:", hull)
@@ -925,18 +925,19 @@ print("Convex Hull:", hull)
 
 ### 8. Notes / Insights
 
-* Convex hull points are **extreme points**
-* Useful in computational geometry for **collision detection, pattern recognition**
-* 3D convex hull: more complex, uses QuickHull or 3D divide & conquer
+* จุดบน Convex Hull คือ **จุดขอบสุด (Extreme points)**
+* ใช้ใน computational geometry สำหรับ **ตรวจจับการชน, การรู้จำรูปแบบ**
+* Convex hull 3D: ซับซ้อนกว่า ใช้ QuickHull หรือ divide & conquer 3D
 
 ---
 
 ### 9. References / Related Concepts
 
-* Computational Geometry: Convex-Hull Chapter
+* Computational Geometry: บท Convex-Hull
 * Plane Sweep Algorithm
-* k-d tree nearest neighbor search
+* k-d tree สำหรับ nearest neighbor
 * CLRS, Section on Divide & Conquer Geometry
+
 
 
 
