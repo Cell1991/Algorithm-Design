@@ -6,8 +6,6 @@
 **2️⃣ Decrease and Conquer**  
 [กลับไปหัวข้อหลัก](#-1️⃣-brute-force)
 
----
-
 **2.1 ⬇️ Decrease by a Constant**  
 ลดปัญหาแบบคงที่ทีละขั้น  
 
@@ -21,8 +19,6 @@
   🔸 [Lexicographic order](#-lexicographic-order)  
   🔸 [Binary Reflected Gray Code *(แนวคิด Minimal Change)*](#-binary-reflected-gray-code-แนวคิด-minimal-change)
 
----
-
 **2.2 🔽 Decrease by a Constant Factor**  
 ลดปัญหาลงทีละสัดส่วน เช่น ครึ่งหนึ่งของขนาดเดิม  
 
@@ -30,8 +26,6 @@
 🔹 [Fake-Coin Problem](#-fake-coin-problem)  
 🔹 [Russian Peasant Multiplication](#-russian-peasant-multiplication)  
 🔹 [Josephus Problem](#-josephus-problem)
-
----
 
 **2.3 🔄 Variable Size Decrease**  
 ลดปัญหาแบบไม่คงที่ ขึ้นกับเงื่อนไขหรือสถานการณ์  
@@ -41,4 +35,4 @@
 🔹 [Interpolation Search](#-interpolation-search)  
 🌳 [Binary Search Tree](#-binary-search-tree)
 
-
+---
