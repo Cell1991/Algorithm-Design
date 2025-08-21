@@ -308,16 +308,12 @@ g.add_edge(3, 1)
 print("Topological Sort:", g.topological_sort())
 ```
 
-------------------------------------------------------------------------
-
 ### 6. Complexity Analysis
 
   Case        Time Complexity   Explanation
   ----------- ----------------- ---------------------------------
   All cases   O(V + E)          DFS ต้องเยี่ยมทุก vertex + edge
   Space       O(V)              เก็บ visited + recursion stack
-
-------------------------------------------------------------------------
 
 ### 7. Use Cases
 
