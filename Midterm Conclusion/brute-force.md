@@ -405,29 +405,34 @@ print(index)  # Output: 6
 
 ---
 
-## 🔹 Closest-Pair and Convex-Hull Problems
+## 🔹 Closest-Pair Problem
 
 ### 1. Concept
-**Closest-Pair Problem**: หา **คู่จุดที่ใกล้ที่สุด**ในชุดของจุด 2D  
-**Convex-Hull Problem**: หา **polygon convex** ที่ครอบจุดทั้งหมดในชุด โดยมีพื้นที่น้อยที่สุดและไม่เว้าเข้าไปด้านใน  
-
-- ลักษณะ: **Combinatorial / Geometric Problems**  
+- หา **คู่จุดที่ใกล้ที่สุด** ในชุดของจุด 2D  
+- ลักษณะ: **Combinatorial / Geometric Problem**  
 - ประเภท: **Computational Geometry**  
-- ใช้ Brute-force ได้ แต่สำหรับจำนวนจุดเยอะจะไม่ efficient  
+- Brute-force ได้ แต่ถ้าจำนวนจุดเยอะจะไม่ efficient  
 
-### 2. Brute-force Approach
+### 2. Mathematical Formulation
+- ให้ชุดของจุด \( P = \{p_1, p_2, ..., p_n\} \)  
+- ระยะระหว่างจุด \( p_i = (x_i, y_i) \) และ \( p_j = (x_j, y_j) \) คือ **Euclidean distance**:
 
-#### Closest-Pair
+\[
+d(p_i, p_j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
+\]
+
+- Closest-Pair:
+
+\[
+(p^*, q^*) = \arg\min_{p_i, p_j \in P, i \neq j} d(p_i, p_j)
+\]
+
+### 3. Brute-force Approach
 1. ตรวจสอบ **ทุกคู่จุด**  
-2. คำนวณระยะระหว่างจุดแต่ละคู่ (Euclidean Distance)  
+2. คำนวณระยะระหว่างจุดแต่ละคู่  
 3. เก็บค่าที่เล็กที่สุด  
 
-#### Convex-Hull
-1. ตรวจสอบ **ทุก subset ของจุด**  
-2. หาค่าที่สามารถสร้าง polygon convex ครอบจุดทั้งหมด  
-3. เลือก polygon ที่มี perimeter หรือ area น้อยที่สุด  
-
-### 3. Pseudocode (Closest-Pair)
+### 4. Pseudocode
 ```
 procedure closestPair(points)
     min_distance ← ∞
@@ -442,7 +447,7 @@ procedure closestPair(points)
 end procedure
 ```
 
-### 4. Python Example (Closest-Pair)
+### 5. Python Example
 ```python
 import math
 
@@ -461,124 +466,64 @@ def closest_pair(points):
                 pair = (points[i], points[j])
     return pair, min_dist
 
-# Example usage
 points = [(2,3),(12,30),(40,50),(5,1),(12,10),(3,4)]
 pair, dist = closest_pair(points)
 print(pair, dist)
 ```
 
-### 5. Complexity Analysis
-| Problem    | Approach       | Time Complexity | Space Complexity |
-|------------|----------------|----------------|-----------------|
-| Closest-Pair | Brute-force   | O(n²)          | O(1)            |
-| Convex-Hull  | Brute-force   | O(n*2^n)       | O(n)            |
+### 6. Complexity Analysis
+| Problem        | Approach       | Time Complexity | Space Complexity |
+|----------------|----------------|----------------|-----------------|
+| Closest-Pair   | Brute-force    | O(n²)          | O(1)            |
 
-### 6. Use Cases
-- Computational geometry problem ขนาด **เล็กถึงกลาง**  
-- ใช้ **baseline** เปรียบเทียบกับ algorithm ที่ซับซ้อน เช่น Divide-and-Conquer หรือ Graham Scan  
-- ตรวจสอบ **correctness** ของ solution สำหรับจำนวนจุดไม่มาก  
-
-### 7. Visualization (Closest-Pair)
-#### Points
-[(2,3),(12,30),(40,50),(5,1),(12,10),(3,4)]
-
-- Step 1: Compare (2,3)-(12,30) → distance 28.03  
-- Step 2: Compare (2,3)-(40,50) → distance 56.87  
-- Step 3: Compare (2,3)-(5,1) → distance 3.61 ✅ (current closest)  
-- Step 4: Continue untilทุกคู่เสร็จ → Final closest pair = (2,3)-(3,4)
+## 7. Use Cases
+- Computational geometry ขนาด **เล็กถึงกลาง**  
+- เป็น **baseline** สำหรับ algorithm ที่ซับซ้อนกว่า  
+- ตรวจสอบ **correctness** สำหรับจำนวนจุดไม่มาก  
 
 ---
 
-## 🗺️ Traveling Salesman Problem
+## 🔹 Convex-Hull Problem
 
 ### 1. Concept
-**Traveling Salesman Problem (TSP)** คือปัญหาในการหา **เส้นทางสั้นที่สุด** ที่ผู้ขายสินค้าจะต้องเยี่ยมชมทุกเมือง **ครั้งเดียว** และกลับมาที่เมืองเริ่มต้น  
+- หา **polygon convex** ที่ครอบจุดทั้งหมด โดยมีพื้นที่หรือ perimeter น้อยที่สุด  
+- ลักษณะ: **Combinatorial / Geometric Problem**  
+- ประเภท: **Computational Geometry**  
+- Brute-force ทำได้ แต่ไม่ efficient สำหรับจำนวนจุดเยอะ  
 
-- ลักษณะ: **Combinatorial Optimization Problem**  
-- ประเภท: **NP-Hard Problem**  
-- ใช้ Brute-force ได้ แต่สำหรับเมืองจำนวนมากไม่ practical  
+### 2. Mathematical Formulation
+- ให้ชุดของจุด \( P = \{p_1, p_2, ..., p_n\} \)  
+- Convex Hull คือ **subset ของจุด** \( H \subseteq P \) ที่:
 
-### 2. Brute-force Approach
-1. สร้าง **ทุก permutation ของเมือง**  
-2. คำนวณระยะทางรวมของแต่ละ permutation  
-3. เลือก permutation ที่มีระยะทางรวมสั้นที่สุด  
+\[
+\text{ConvexHull}(P) = \text{smallest convex polygon containing all points in } P
+\]
 
-### 3. Pseudocode
-```
-procedure TSP_BruteForce(cities, distanceMatrix)
-    best_distance ← ∞
-    best_route ← null
-    for each permutation p of cities do
-        d ← totalDistance(p, distanceMatrix)
-        if d < best_distance then
-            best_distance ← d
-            best_route ← p
-    return best_route, best_distance
-end procedure
-```
+- การตรวจสอบ convexity ใช้ **cross product**:
 
-### 4. Python Example
-```python
-import itertools
+\[
+\text{cross}(a, b, c) = (b_x - a_x)(c_y - a_y) - (b_y - a_y)(c_x - a_x)
+\]
 
-def total_distance(route, distance_matrix):
-    dist = 0
-    n = len(route)
-    for i in range(n-1):
-        dist += distance_matrix[route[i]][route[i+1]]
-    dist += distance_matrix[route[-1]][route[0]]  # return to start
-    return dist
+- สำหรับทุกสามจุด consecutive \((a,b,c)\) ใน polygon:
 
-def tsp_bruteforce(distance_matrix):
-    n = len(distance_matrix)
-    cities = list(range(n))
-    min_dist = float('inf')
-    best_route = None
-    for perm in itertools.permutations(cities):
-        d = total_distance(perm, distance_matrix)
-        if d < min_dist:
-            min_dist = d
-            best_route = perm
-    return best_route, min_dist
+\[
+\text{cross}(a,b,c) > 0 \implies \text{left turn (convex)}
+\]
 
-# Example usage
-distance_matrix = [
-    [0, 10, 15, 20],
-    [10, 0, 35, 25],
-    [15, 35, 0, 30],
-    [20, 25, 30, 0]
-]
-route, dist = tsp_bruteforce(distance_matrix)
-print(route, dist)
-```
+### 3. Brute-force Approach
+1. ตรวจสอบ **ทุก subset ของจุด**  
+2. สร้าง polygon convex ครอบทุก subset  
+3. เลือก polygon ที่ **area** หรือ **perimeter** น้อยที่สุด  
 
-### 5. Complexity Analysis
-| Case       | Time Complexity | Explanation                          |
-|------------|----------------|--------------------------------------|
-| Brute-force| O(n!)          | ตรวจทุก permutation ของ n เมือง     |
-| Space      | O(n)           | เก็บ route ปัจจุบันและดีที่สุด       |
+### 4. Complexity Analysis
+| Problem        | Approach       | Time Complexity | Space Complexity |
+|----------------|----------------|----------------|-----------------|
+| Convex-Hull    | Brute-force    | O(n * 2^n)     | O(n)            |
 
-### 6. Use Cases
-- เหมาะสำหรับ **จำนวนเมืองน้อย** (n ≤ 10)  
-- ใช้เป็น **baseline** สำหรับเปรียบเทียบ heuristic/approximation methods เช่น **Nearest Neighbor**, **Genetic Algorithm**, **Dynamic Programming**  
-- ใช้ใน **Logistics, Route Planning** และ **Optimization Research**  
-
-### 7. Visualization (Example)
-#### Cities
-0, 1, 2, 3  
-#### Distance Matrix
-```
-0 10 15 20
-10 0 35 25
-15 35 0 30
-20 25 30 0
-```
-- Step 1: Consider route (0,1,2,3,0) → distance 10+35+30+20=95  
-- Step 2: Consider route (0,1,3,2,0) → distance 10+25+30+15=80 ✅  
-- Continue forทุก permutation → Best route = (0,1,3,2,0)
-
-
-
+### 5. Use Cases
+- Computational geometry **ขนาดเล็กมาก**  
+- เป็น **baseline** สำหรับ algorithm ที่เร็วกว่า เช่น Graham Scan, Jarvis March
 ---
 
 ## 🎒 Knapsack Problem
