@@ -191,22 +191,6 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 ---
 
-## 📝 Pseudocode
-```text
-procedure bubbleSort(A)
-    n ← length(A)
-    repeat
-        swapped ← false
-        for i ← 0 to n-2 do
-            if A[i] > A[i+1] then
-                swap A[i], A[i+1]
-                swapped ← true
-        n ← n - 1
-    until swapped = false
-end procedure
-```
----
-
 
 ## 🔹 Selection Sort
 *(สามารถใส่รายละเอียดแบบเดียวกับ Bubble Sort)*
