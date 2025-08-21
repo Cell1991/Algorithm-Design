@@ -299,7 +299,7 @@ Original Array: [5, 3, 8, 4, 2]
 
 ---
 
-## 🔹 Binary Tree Traversals and Related Properties
+## 🌳 Binary Tree Traversals and Related Properties
 
 ### 1. Concept / Purpose
 การ Traversal หมายถึงการเดินไปตาม node ของต้นไม้ (Binary Tree) เพื่อเข้าถึงทุก node อย่างเป็นระบบและมีลำดับที่แน่นอน  
@@ -620,23 +620,24 @@ print('Morris Inorder:', morris_inorder(A))
 
 ---
 
-## 🔹 Closest-Pair Problem (Divide & Conquer)
+## 🌀 Closest-Pair Problem (Divide & Conquer)
 
 ### 1. Concept / Purpose
 
-Closest-Pair Problem คือการหาคู่จุดที่ **มีระยะห่างระหว่างกันน้อยที่สุด** ในชุดจุด 2D หรือ nD
-เป็นพื้นฐานสำหรับงานด้าน **computational geometry**, เช่น:
+Closest-Pair Problem คือการหาคู่จุด $(p_i, p_j)$ ที่ **ระยะห่างระหว่างกันน้อยที่สุด** ในชุดจุด 2D หรือ nD
 
-* การจัดเรียงจุด
-* การหาสมาชิกใกล้กันใน clustering
+เป็นพื้นฐานของงานด้าน **computational geometry**, เช่น:
+
+* Clustering / finding nearest neighbors
 * Collision detection ใน computer graphics
+* Spatial analysis และ mapping
 
 ---
 
 ### 2. Problem Definition
 
-* Input: ชุดของ n จุด \$P = {p\_1, p\_2, ..., p\_n}\$ ใน 2D
-* Output: คู่จุด \$(p\_i, p\_j)\$ ที่ระยะ Euclidean สั้นที่สุด
+* **Input:** ชุดของ n จุด $P = \{p_1, p_2, ..., p_n\}$ ใน 2D
+* **Output:** คู่จุด $(p_i, p_j)$ ที่มีระยะ Euclidean สั้นที่สุด
 
 **Distance Formula (2D):**
 
@@ -644,20 +645,23 @@ $$
 d(p_i, p_j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
 $$
 
-**Brute-force:** ตรวจทุกคู่ → O(n²)
+**Brute-force Approach:**
+ตรวจทุกคู่จุด → **O(n²)**
 
 ---
 
-### 🔸 Divide & Conquer Approach
+### 3. Divide & Conquer Approach
+
+**Step-by-step:**
 
 1. **Sort points by x-coordinate**
-2. **Divide:** แบ่งจุดออกเป็นสองครึ่ง (left, right)
-3. **Conquer:** หาคู่ใกล้สุดในแต่ละครึ่ง (recursively) → \$d\_L\$, \$d\_R\$
+2. **Divide:** แบ่งจุดออกเป็นสองครึ่ง (Left, Right) ตาม median x
+3. **Conquer:** หาคู่ใกล้สุดในแต่ละครึ่ง (recursively) → $d_L$, $d_R$
 4. **Combine:**
 
-   * \$\delta = \min(d\_L, d\_R)\$
-   * ตรวจจุดที่อยู่ใกล้เส้นแบ่ง ±\$\delta\$ (strip)
-   * เฉพาะจุดใน strip ต้อง check pair ระยะใกล้สุด → O(n)
+   * ตรวจจุดที่อยู่ใกล้เส้นแบ่งในช่วง $\pm \delta$ (strip)
+   * เฉพาะจุดใน strip ต้อง check ระยะใกล้สุด → O(n)
+   * $\delta = \min(d_L, d_R)$
 
 **Key Insight:**
 
@@ -666,115 +670,276 @@ $$
 
 ---
 
-### 3. Step-by-step Example
+### 4. Visual Example (Step-by-step)
 
-ชุดจุด:
+สมมติชุดจุดเล็ก ๆ:
 
 ```
-P = [(2,3), (12,30), (40,50), (5,1), (12,10), (3,4)]
+Points: P = [(2,3), (12,30), (40,50), (5,1), (12,10), (3,4)]
 ```
 
-1. Sort by x → `[(2,3),(3,4),(5,1),(12,10),(12,30),(40,50)]`
-2. Divide: left = `[(2,3),(3,4),(5,1)]`, right = `[(12,10),(12,30),(40,50)]`
-3. Recursive closest-pair:
+**Step 1: Sort by x-coordinate**
 
-   * Left → (2,3)-(3,4) = \$\sqrt{2} \approx 1.414\$
-   * Right → (12,10)-(12,30) = 20
-4. Combine strip \$\delta = 1.414\$ → ตรวจ strip → ไม่พบคู่ที่ใกล้กว่านี้
-5. Result → **Closest Pair = (2,3) & (3,4), distance ≈ 1.414**
+```
+Sorted by x: [(2,3), (3,4), (5,1), (12,10), (12,30), (40,50)]
+```
+
+**Step 2: Divide**
+
+* Left half: \[(2,3), (3,4), (5,1)]
+* Right half: \[(12,10), (12,30), (40,50)]
+
+**Step 3: Conquer**
+
+* Find closest in Left: (2,3) & (3,4) → distance = $\sqrt{2}$
+* Find closest in Right: (12,10) & (12,30) → distance = 20
+
+**Step 4: Combine**
+
+* Minimum distance overall: $\delta = \min(d_L, d_R) = \min(\sqrt{2}, 20) = \sqrt{2}$
+* Points in strip around median (x≈5\~12) → check pairs
+* Closest pair in strip? (5,1) & (12,10) → distance > δ
+* Result: closest pair = (2,3) & (3,4)
+
+**ASCII Illustration:**
+
+```
+Y
+50 |                             F(40,50)
+30 |                     E(12,30)
+20 |
+10 |             D(12,10)
+5  |
+4  |     B(3,4)
+3  | A(2,3)
+1  |     C(5,1)
+0  +--------------------------- X
+   0   5   10  15  20  ...  40
+```
 
 ---
 
-### 4. Complexity Analysis
+### 5. Complexity
 
-| Step      | Time Complexity |
-| --------- | --------------- |
-| Sorting   | O(n log n)      |
-| Divide    | 2 \* T(n/2)     |
-| Combine   | O(n)            |
-| **Total** | O(n log n)      |
+| Approach         | Time Complexity | Space Complexity                     |
+| ---------------- | --------------- | ------------------------------------ |
+| Brute-force      | O(n²)           | O(1)                                 |
+| Divide & Conquer | O(n log n)      | O(n) (for sorted arrays / recursion) |
 
-**Space:** O(n) for recursion + temp arrays
+**Remarks:**
+
+* Sorting points initially: O(n log n)
+* Recursive divide & combine: O(n log n)
+* Only check limited points in strip → constant factor
 
 ---
 
-### 5. Python Example Code
+### 6. Python Implementation
 
 ```python
 import math
 
-def dist(p1, p2):
+def distance(p1, p2):
     return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
 
-def brute_force(P):
+# Brute-force
+def closest_pair_brute(points):
     min_d = float('inf')
     pair = None
-    n = len(P)
+    n = len(points)
     for i in range(n):
         for j in range(i+1, n):
-            d = dist(P[i], P[j])
+            d = distance(points[i], points[j])
             if d < min_d:
                 min_d = d
-                pair = (P[i], P[j])
-    return min_d, pair
+                pair = (points[i], points[j])
+    return pair, min_d
 
-def strip_closest(strip, delta):
-    min_d = delta
-    pair = None
-    strip.sort(key=lambda p: p[1])  # sort by y
-    for i in range(len(strip)):
-        for j in range(i+1, len(strip)):
-            if (strip[j][1] - strip[i][1]) >= min_d:
-                break
-            d = dist(strip[i], strip[j])
-            if d < min_d:
-                min_d = d
-                pair = (strip[i], strip[j])
-    return min_d, pair
-
-def closest_pair_rec(Px, Py):
-    n = len(Px)
-    if n <= 3:
-        return brute_force(Px)
+# Divide & Conquer
+def closest_pair_dc(points):
+    def _closest(Px, Py):
+        n = len(Px)
+        if n <= 3:
+            return closest_pair_brute(Px)
+        
+        mid = n // 2
+        Qx, Rx = Px[:mid], Px[mid:]
+        midpoint = Px[mid][0]
+        Qy = list(filter(lambda p: p[0] <= midpoint, Py))
+        Ry = list(filter(lambda p: p[0] > midpoint, Py))
+        
+        (p1, q1), d1 = _closest(Qx, Qy)
+        (p2, q2), d2 = _closest(Rx, Ry)
+        delta = min(d1, d2)
+        best_pair = (p1,q1) if d1 <= d2 else (p2,q2)
+        
+        # Build strip
+        strip = [p for p in Py if abs(p[0]-midpoint) < delta]
+        for i in range(len(strip)):
+            for j in range(i+1, min(i+7, len(strip))):
+                d = distance(strip[i], strip[j])
+                if d < delta:
+                    delta = d
+                    best_pair = (strip[i], strip[j])
+        return best_pair, delta
     
-    mid = n // 2
-    Qx = Px[:mid]; Rx = Px[mid:]
-    midpoint = Px[mid][0]
-    
-    Qy = list(filter(lambda p: p[0] <= midpoint, Py))
-    Ry = list(filter(lambda p: p[0] > midpoint, Py))
-    
-    dl, pair_l = closest_pair_rec(Qx, Qy)
-    dr, pair_r = closest_pair_rec(Rx, Ry)
-    
-    delta = min(dl, dr)
-    pair = pair_l if dl <= dr else pair_r
-    
-    strip = [p for p in Py if abs(p[0]-midpoint) < delta]
-    ds, pair_s = strip_closest(strip, delta)
-    
-    if ds < delta:
-        return ds, pair_s
-    else:
-        return delta, pair
-
-def closest_pair(P):
-    Px = sorted(P, key=lambda p: p[0])
-    Py = sorted(P, key=lambda p: p[1])
-    return closest_pair_rec(Px, Py)
+    Px = sorted(points, key=lambda x: x[0])
+    Py = sorted(points, key=lambda x: x[1])
+    return _closest(Px, Py)
 
 # Example
 points = [(2,3), (12,30), (40,50), (5,1), (12,10), (3,4)]
-distance, pair = closest_pair(points)
-print("Closest Pair:", pair, "Distance:", distance)
+print("Brute-force:", closest_pair_brute(points))
+print("Divide & Conquer:", closest_pair_dc(points))
 ```
 
 ---
 
-### 6. Notes / Tips
+## 💎 Convex-Hull Problem (Computational Geometry)
 
-* Algorithm **Divide & Conquer** เหมาะกับ n ใหญ่ (n > 10³)
-* Brute-force เหมาะกับ n เล็ก (n ≤ 3)
-* 2D case ใช้ check max 7 points ใน strip
-* สำหรับ 3D/สูงกว่า ต้องปรับแนวคิด strip → complexity เพิ่ม
+### 1. Concept / Purpose
+
+Convex-Hull คือ **รูปหลายเหลี่ยม convex เล็กที่สุด** ที่ครอบจุดทั้งหมดในชุด P
+
+เป็นพื้นฐานของงานด้าน computational geometry เช่น:
+
+* Collision detection
+* Shape analysis / pattern recognition
+* Path planning และ GIS
+
+---
+
+### 2. Problem Definition
+
+* **Input:** ชุดของ n จุด $P = \{p_1, p_2, ..., p_n\}$ ใน 2D
+* **Output:** ชุดจุดที่สร้าง **Convex Hull** ล้อมรอบทุกจุดใน P
+
+**Visual Idea:**
+
+```
+Y
+|
+|       *E
+|   *B       *D
+|       *C
+|*A
++---------------- X
+```
+
+* Convex hull จะเป็นรูปหลายเหลี่ยม A-B-D-E-A (เรียงตามลำดับ)
+* จุด C อยู่ภายใน, ไม่อยู่บน hull
+
+---
+
+### 3. Properties of Convex Hull
+
+* **Convex Polygon:** เส้นตรงระหว่างจุดสองจุดใด ๆ อยู่ภายใน polygon
+* **Number of vertices:** ≤ n
+* **Boundary:** จุดบน hull เป็น subset ของ P
+
+---
+
+### 4. Algorithms
+
+**Common 2D Algorithms (O(n log n))**
+
+1. **Graham’s Scan:**
+
+   * Sort points by polar angle from pivot (lowest y-coordinate)
+   * Push points onto stack, check turn direction (cross product)
+2. **Jarvis March (Gift Wrapping):**
+
+   * Start from leftmost point
+   * Wrap around by selecting next point with minimal polar angle
+   * Complexity O(nh) (h = number of hull points)
+3. **Divide & Conquer:**
+
+   * Split points → compute hull left/right → merge
+   * Complexity O(n log n)
+
+**Key Operations:**
+
+* Cross product to determine orientation (left-turn, right-turn)
+
+---
+
+### 5. Orientation & Cross Product
+
+Given three points $p, q, r$:
+
+$$
+\text{orientation} = (q_x - p_x)(r_y - p_y) - (q_y - p_y)(r_x - p_x)
+$$
+
+* > 0 → left turn
+* \=0 → collinear
+* <0 → right turn
+
+---
+
+### 6. Python Example (Graham’s Scan)
+
+```python
+def cross(o, a, b):
+    return (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0])
+
+def graham_scan(points):
+    points = sorted(set(points))  # remove duplicates
+    if len(points) <= 1:
+        return points
+    
+    # Build lower hull
+    lower = []
+    for p in points:
+        while len(lower) >= 2 and cross(lower[-2], lower[-1], p) <= 0:
+            lower.pop()
+        lower.append(p)
+    
+    # Build upper hull
+    upper = []
+    for p in reversed(points):
+        while len(upper) >= 2 and cross(upper[-2], upper[-1], p) <= 0:
+            upper.pop()
+        upper.append(p)
+    
+    # Concatenate lower and upper hull (excluding duplicates)
+    return lower[:-1] + upper[:-1]
+
+# Example
+points = [(0,0), (1,1), (2,2), (2,0), (1,-1), (0,2)]
+hull = graham_scan(points)
+print("Convex Hull:", hull)
+```
+
+---
+
+### 7. Complexity
+
+| Algorithm        | Time Complexity |
+| ---------------- | --------------- |
+| Graham’s Scan    | O(n log n)      |
+| Jarvis March     | O(nh)           |
+| Divide & Conquer | O(n log n)      |
+
+---
+
+### 8. Notes / Insights
+
+* Convex hull points are **extreme points**
+* Useful in computational geometry for **collision detection, pattern recognition**
+* 3D convex hull: more complex, uses QuickHull or 3D divide & conquer
+
+---
+
+### 9. References / Related Concepts
+
+* Computational Geometry: Convex-Hull Chapter
+* Plane Sweep Algorithm
+* k-d tree nearest neighbor search
+* CLRS, Section on Divide & Conquer Geometry
+
+
+
+
+
 
