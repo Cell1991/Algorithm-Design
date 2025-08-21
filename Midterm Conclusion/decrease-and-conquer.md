@@ -535,7 +535,33 @@ minimal_change_permutation([1,2,3])
 * Simulations ที่ต้องลองทุก permutation
 * Problems ที่ต้องการ minimal-change permutations
 
-### 5. Pseudocode
+### 5. Principle / How it works
+
+* **หลักการคิด:**
+
+  1. กำหนดทิศทางเริ่มต้นของแต่ละ element ให้ชี้ซ้าย
+  2. หาตัวเลขที่ **mobile** (สามารถเลื่อนไปตามทิศทางโดยไม่ชนขอบหรือ element ที่ใหญ่กว่า) ที่มีค่ามากที่สุด
+  3. สลับตำแหน่งตัวเลข mobile กับ neighbor ในทิศทางที่ชี้
+  4. พลิกทิศทางของ element ที่มีค่ามากกว่าตัวเลข mobile ล่าสุด
+  5. ทำซ้ำจนไม่มีตัวเลข mobile
+* **Minimal-change:** permutation แต่ละตัวแตกต่างจากตัวก่อนหน้าด้วยการสลับเพียง 2 element เท่านั้น
+
+### 6. Example
+
+* **เริ่มต้น:** \[1, 2, 3] (ทิศทางทั้งหมดชี้ซ้าย)
+* **Step 1:** largest mobile = 3 → swap 3 กับ 2 → \[1, 3, 2]
+* **Step 2:** largest mobile = 3 → swap 3 กับ 1 → \[3, 1, 2]
+* **Step 3:** largest mobile = 2 → swap 2 กับ 1 → \[3, 2, 1]
+* **Step 4:** largest mobile = 3 → swap 3 กับ 2 → \[2, 3, 1]
+* **Step 5:** largest mobile = 2 → swap 2 กับ 1 → \[2, 1, 3]
+* **Step 6:** largest mobile = 3 → swap 3 กับ 1 → \[1, 2, 3] (กลับสู่ permutation เริ่มต้น)
+
+
+* Generating permutations for testing all possibilities
+* Simulations ที่ต้องลองทุก permutation
+* Problems ที่ต้องการ minimal-change permutations
+
+### 7. Pseudocode
 
 ```
 procedure JohnsonTrotter(n):
@@ -548,7 +574,7 @@ procedure JohnsonTrotter(n):
         Output current permutation
 ```
 
-### 6. Python Example
+### 8. Python Example
 
 ```python
 # Johnson-Trotter Algorithm implementation
