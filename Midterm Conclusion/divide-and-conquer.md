@@ -78,8 +78,6 @@ sorted_data = merge_sort(data)
 print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 ```
 
----
-
 ### 5. Complexity Analysis
 | Case       | Time Complexity | Explanation                                |
 |------------|----------------|--------------------------------------------|
