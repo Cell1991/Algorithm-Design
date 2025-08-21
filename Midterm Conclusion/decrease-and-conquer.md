@@ -210,3 +210,122 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 ### 🎥 ดูวิดีโอบน YouTube  
 🔗 https://www.youtube.com/watch?v=Q1JdRUh1_98
 
+---
+
+## 🔹 Topological Sorting (DFS)
+
+### 1. Concept / Purpose
+
+Topological Sorting คือการ **เรียงลำดับจุดยอด (vertices)** ของ
+**Directed Acyclic Graph (DAG)**\
+โดยต้องเรียงให้ **ทุกเส้นทาง (u → v)** มี `u` อยู่ก่อน `v` ในลำดับ
+
+-   **ลักษณะ** ใช้ได้เฉพาะ DAG เท่านั้น\
+-   **ประเภท** Graph algorithm\
+-   **ข้อดี** ใช้เป็นพื้นฐานในหลายปัญหา เช่น scheduling, dependency
+    resolution\
+-   **ข้อเสีย** ใช้ไม่ได้ถ้าเป็นกราฟที่มี cycle
+
+------------------------------------------------------------------------
+
+### 2. Motivation / Why use it
+
+-   ใช้ในการ **จัดลำดับงานที่มี dependency** (เช่น
+    งานที่ต้องทำก่อนหลัง)\
+-   ใช้เป็นพื้นฐานในอัลกอริทึมอื่น เช่น **Critical Path Method**,
+    **Course Scheduling**\
+-   ใช้ช่วยแก้ปัญหาที่เกี่ยวกับ **การจัดลำดับ dependency**
+
+------------------------------------------------------------------------
+
+### 3. Algorithm Idea (DFS Approach)
+
+1.  ใช้ DFS เดินทางในกราฟ\
+2.  เมื่อเยี่ยมครบทุกเพื่อนบ้านของ vertex แล้ว ให้ **push vertex เข้าสู่
+    stack**\
+3.  หลัง DFS ครบทุก node → pop stack ออกมาจะได้ topological order
+
+------------------------------------------------------------------------
+
+### 4. Pseudocode
+
+    procedure topologicalSortDFS(G):
+        visited ← set()
+        stack ← empty
+        
+        for each vertex v in G:
+            if v not in visited:
+                DFS(v, visited, stack)
+        
+        return reverse(stack)
+
+    procedure DFS(v, visited, stack):
+        mark v as visited
+        for each neighbor u of v:
+            if u not in visited:
+                DFS(u, visited, stack)
+        push v into stack
+
+------------------------------------------------------------------------
+
+### 5. Python Example
+
+``` python
+from collections import defaultdict
+
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def topological_sort_util(self, v, visited, stack):
+        visited[v] = True
+        for neighbor in self.graph[v]:
+            if not visited[neighbor]:
+                self.topological_sort_util(neighbor, visited, stack)
+        stack.append(v)
+
+    def topological_sort(self):
+        visited = [False] * self.V
+        stack = []
+        for i in range(self.V):
+            if not visited[i]:
+                self.topological_sort_util(i, visited, stack)
+        return stack[::-1]
+
+# Example
+g = Graph(6)
+g.add_edge(5, 2)
+g.add_edge(5, 0)
+g.add_edge(4, 0)
+g.add_edge(4, 1)
+g.add_edge(2, 3)
+g.add_edge(3, 1)
+
+print("Topological Sort:", g.topological_sort())
+```
+
+------------------------------------------------------------------------
+
+### 6. Complexity Analysis
+
+  Case        Time Complexity   Explanation
+  ----------- ----------------- ---------------------------------
+  All cases   O(V + E)          DFS ต้องเยี่ยมทุก vertex + edge
+  Space       O(V)              เก็บ visited + recursion stack
+
+------------------------------------------------------------------------
+
+### 7. Use Cases
+
+-   **Scheduling งาน** ที่มี dependency (เช่น วิชาที่ต้องเรียนตามลำดับ)\
+-   **Task dependency resolution** ในระบบ build tools (เช่น Makefile,
+    Gradle)\
+-   **การจัดการลำดับงาน** ใน compiler หรือ job scheduler
+
+------------------------------------------------------------------------
+
+
