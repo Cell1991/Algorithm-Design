@@ -10,7 +10,7 @@
 🌀 [Closest-pair Problem](#-closest-pair-problem)  
 💎 [Convex-hull Problem](#-convex-hull-problem)
 
-## Merge Sort
+## 🔥 Merge Sort
 
 ### 1. Concept
 **Merge Sort** เป็นอัลกอริทึมแบบ Divide & Conquer
@@ -110,7 +110,7 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 ---
 
-## Quick Sort (ฉบับเต็ม: Pivot Strategies + i/j Explanation)
+## ⚡ Quick Sort (ฉบับเต็ม: Pivot Strategies + i/j Explanation)
 
 ### 1. Concept
 **Quick Sort** เป็นอัลกอริทึมแบบ Divide & Conquer ที่แบ่งลิสต์โดยการเลือก "Pivot" แล้วจัดเรียงค่ารอบ ๆ Pivot  
