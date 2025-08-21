@@ -1,10 +1,7 @@
 ## **2️⃣ [Decrease and Conquer](decrease-and-conquer.md)**
 ลดขนาดของปัญหาแล้วแก้ทีละขั้น โดยแบ่งตามวิธีลดขนาด
 
-### สารบัญ
-
-**2️⃣ Decrease and Conquer**  
-[กลับไปหัวข้อหลัก](#-1️⃣-brute-force)
+### สารบัญ 
 
 **2.1 ⬇️ Decrease by a Constant**  
 ลดปัญหาแบบคงที่ทีละขั้น  
