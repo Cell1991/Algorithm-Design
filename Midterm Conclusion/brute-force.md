@@ -67,7 +67,7 @@ procedure exhaustiveSearch(problem)
                 best_solution ← candidate
     return best_solution
 end procedure
-
+```
 ---
 
 ## 🔹 Bubble Sort
