@@ -301,203 +301,59 @@ Original Array: [5, 3, 8, 4, 2]
 
 ---
 
-## 🔸 Minimal-change Requirement
-
-### 1. Concept / Purpose
-
-* Minimal-change Requirement เป็น **แนวคิดในการสร้าง sequence ของ permutations**
-* วัตถุประสงค์: แต่ละ permutation **แตกต่างจากตัวก่อนหน้าเพียงการสลับ 2 elements เท่านั้น**
-* ใช้ใน **generating permutations efficiently** โดยลดความซับซ้อนของการเปลี่ยนแปลง
-
-### 2. Motivation / Why use it
-
-* ลดความซับซ้อนของการเปลี่ยนแปลงระหว่าง permutations
-* ใช้ใน **backtracking, simulation, combinatorial testing**
-* ทำให้ sequence ของ permutations สามารถ **trace หรือ reproduce** ได้ง่าย
-
-### 3. Complexity Analysis
-
-| Aspect | Complexity |
-| ------ | ---------- |
-| Time   | O(n!)      |
-| Space  | O(n)       |
-
-### 4. Use Cases
-
-* Generating permutations for testing all possibilities
-* Simulations ที่ต้องลอง permutation หลายแบบ
-* Problems ที่ต้องการ minimal-change sequences
-
-### 5. Principle / How it works
-
-* **หลักการคิด:**
-
-  1. เริ่มจาก permutation แรก (เช่น \[1,2,3,...,n])
-  2. สร้าง permutation ถัดไปโดย **สลับเพียง 2 elements**
-  3. ทำซ้ำจนได้ทุก permutation
-* ตัวอย่าง algorithms ที่ใช้: **Johnson-Trotter, Gray code based permutations**
-
-### 6. Example
-
-* n = 3, permutations sequence แบบ minimal-change:
-
-```
-[1, 2, 3]
-[1, 3, 2]  # swap 2 and 3
-[3, 1, 2]  # swap 1 and 3
-[3, 2, 1]  # swap 1 and 2
-[2, 3, 1]  # swap 2 and 3
-[2, 1, 3]  # swap 1 and 2
-```
-
-* สังเกตว่าแต่ละ step **เปลี่ยนแค่ 2 elements**
-
-### 7. Pseudocode
-
-```
-procedure MinimalChangePermutation(n):
-    Initialize first permutation P = [1, 2, ..., n]
-    while not all permutations generated:
-        Find next permutation by swapping 2 elements according to algorithm
-        Output current permutation
-```
-
-### 8. Python Example
-
-```python
-def minimal_change_permutation(n):
-    # Example using Johnson-Trotter idea
-    perm = list(range(1, n+1))
-    dir = [-1] * n  # -1 means LEFT, 1 means RIGHT
-
-    def mobile():
-        m, idx = -1, -1
-        for i in range(n):
-            neighbor = i + dir[i]
-            if 0 <= neighbor < n and perm[i] > perm[neighbor]:
-                if perm[i] > m:
-                    m, idx = perm[i], i
-        return idx
-
-    while True:
-        print(perm)
-        idx = mobile()
-        if idx == -1:
-            break
-        neighbor = idx + dir[idx]
-        perm[idx], perm[neighbor] = perm[neighbor], perm[idx]
-        dir[idx], dir[neighbor] = dir[neighbor], dir[idx]
-        idx = neighbor
-        for i in range(n):
-            if perm[i] > perm[idx]:
-                dir[i] *= -1
-
-# Example usage
-minimal_change_permutation(3)
-# Output:
-# [1, 2, 3]
-# [1, 3, 2]
-# [3, 1, 2]
-# [3, 2, 1]
-# [2, 3, 1]
-# [2, 1, 3]
-```
-
 ## 🔹 Binary Tree Traversals and Related Properties
 
 ### 1. Concept / Purpose
 
-* อธิบายวิธีเดิน (traverse) โครงสร้างข้อมูลแบบ Binary Tree เพื่อเข้าถึงทุก node อย่างเป็นระบบ
-* Traversals หลัก ๆ: Preorder, Inorder, Postorder (DFS-family) และ Level-order (BFS)
-* เชื่อมโยงคุณสมบัติเชิงทฤษฎีของ Binary Tree (เช่น ความสูง จำนวนโหนด ความสัมพันธ์ใบ/โหนดภายใน ฯลฯ)
+* อธิบายการ **เดิน (traverse)** โครงสร้างข้อมูลแบบ Binary Tree เพื่อเข้าถึงทุก node อย่างเป็นระบบและมีลำดับ
+* เป้าหมาย: ใช้ในการประมวลผลข้อมูลบนต้นไม้ เช่น การประเมิน expression, การ serialize/deserialize, การค้นหา/เรียงลำดับ (ใน BST)
 
 ### 2. Motivation / Why use it
 
-* จำเป็นต่อการประมวลผล/แปลงต้นไม้ เช่น สร้าง expression, ประเมินค่า, serialization/deserialization
-* ใช้ใน BST (Inorder ให้ผลลัพธ์เรียงลำดับ), Heaps, Parsing, Compilers
-* พื้นฐานของการสร้างต้นไม้กลับ (tree reconstruction) จากชุด traversal บางคู่
+* Traversal เป็นพื้นฐานของงานบนต้นไม้ทุกชนิด — การแปลงข้อมูล การคำนวณค่าจากโครงสร้าง การสำเนา และการแปลงรูปแบบ
+* เลือก traversal ให้ตรงกับงาน เช่น Inorder เพื่อรับลำดับเรียงของ BST, Postorder เพื่อคำนวณ expression tree
 
 ### 3. Complexity Analysis
 
-| Operation                                        | Time | Extra Space                  |
-| ------------------------------------------------ | ---- | ---------------------------- |
-| Preorder / Inorder / Postorder (recursive)       | O(n) | O(h) recursion stack         |
-| Preorder / Inorder / Postorder (iterative stack) | O(n) | O(h)                         |
-| Level-order (BFS queue)                          | O(n) | O(w) (w = ความกว้างสูงสุด)   |
-| Morris Traversal (Inorder/Preorder)              | O(n) | O(1) (ปรับ pointer ชั่วคราว) |
+| Operation                            | Time |                Extra Space |
+| ------------------------------------ | ---: | -------------------------: |
+| Recursive Preorder/Inorder/Postorder | O(n) |       O(h) recursion stack |
+| Iterative (stack) variants           | O(n) |                       O(h) |
+| Level-order (BFS queue)              | O(n) |           O(w) (max width) |
+| Morris Traversal (Inorder/Preorder)  | O(n) | O(1) (temporary threading) |
 
-> n = จำนวน node, h = ความสูงของต้นไม้ (สูงสุด n-1 ถ้า skewed), w = maximum width
+> n = จำนวน node, h = ความสูงของต้นไม้, w = ความกว้างสูงสุดของต้นไม้
 
-### 4. Traversal Types (Principle / How it works)
+### 4. Traversal Types — Principle / When to use
 
-**4.1 DFS Family (Depth-First Traversals)**
+**Preorder (Root, Left, Right)**
 
-* Preorder (Root, Left, Right): เยี่ยม root ก่อน → ใช้สำหรับ copy tree / prefix notation
-* Inorder (Left, Root, Right): สำหรับ BST จะได้ลำดับเรียงจากน้อยไปมาก
-* Postorder (Left, Right, Root): ใช้ลบต้นไม้/คำนวณค่านิพจน์ (ต้องทราบค่าลูกก่อน)
+* หลักการ: เยี่ยม root ก่อน แล้วไปซ้ายสุด แล้วขวา
+* ใช้สำหรับ: คัดลอกต้นไม้, สร้าง prefix expression, serialization (preorder + null markers)
 
-**4.2 BFS (Level-order)**
+**Inorder (Left, Root, Right)**
 
-* เยี่ยม node ทีละระดับ (level) จากซ้ายไปขวา ด้วย queue
+* หลักการ: เยี่ยมซ้ายก่อน แล้ว root แล้วขวา
+* ใช้สำหรับ: BST เพื่อให้ลำดับเรียง, infix expression processing
 
-**4.3 Euler Tour View (มุมมองเดียวครอบคลุม)**
+**Postorder (Left, Right, Root)**
 
-* คิดว่าเราเดิน “รอบ” ต้นไม้: ก่อนเข้าซ้าย (pre), กลับจากซ้าย (in), กลับจากขวา (post)
+* หลักการ: เยี่ยมลูกก่อน แล้ว root
+* ใช้สำหรับ: การลบต้นไม้, evaluating expression trees (ต้องได้ค่าลูกก่อน)
 
-**4.4 Morris Traversal (Inorder/Preorder แบบ O(1) space)**
+**Level-order (Breadth-First Search)**
 
-* สร้าง/คืนค่า thread ชั่วคราวจาก predecessor → ไม่ใช้ stack/recursion
+* หลักการ: เยี่ยมทีละระดับจากซ้ายไปขวาด้วย queue
+* ใช้สำหรับ: การ serialize แบบ level-order, หาความกว้าง, parallel processing per level
 
-### 5. Worked Example (Step by Step)
+**Morris Traversal (Threaded idea)**
 
-พิจารณาต้นไม้ตัวอย่าง (ค่าภายในเป็นตัวอักษร):
+* หลักการ: สร้าง temporary thread จาก inorder-predecessor ไปยัง node ปัจจุบัน เพื่อลด extra-space เป็น O(1)
+* ข้อควรระวัง: เปลี่ยน pointer ชั่วคราว — ระวังถ้าต้นไม้ถูกแชร์
 
-```
-        A
-       / \
-      B   C
-     / \   \
-    D   E   F
-```
+### 5. Pseudocode (Short & Practical)
 
-* Preorder: A, B, D, E, C, F
-* Inorder: D, B, E, A, C, F
-* Postorder: D, E, B, F, C, A
-* Level-order: A, B, C, D, E, F
-
-### 6. Traversal → Reconstruction (คุณสมบัติสำคัญ)
-
-* Inorder + Preorder → สร้างต้นไม้ได้หนึ่งเดียว (keys ไม่ซ้ำ)
-* Inorder + Postorder → สร้างต้นไม้ได้หนึ่งเดียว (keys ไม่ซ้ำ)
-* Preorder + Postorder → โดยทั่วไปไม่พอ (ไม่ unique) ยกเว้น full/proper binary tree (ทุกโหนดภายในมีลูก 2 คน)
-* สำหรับ BST: มีเพียง Preorder หรือ Postorder อย่างเดียว (ไม่มี inorder) ก็ reconstruct ได้ (เพราะ invariant ของ BST)
-
-### 7. Related Properties of Binary Trees
-
-**นิยาม**
-
-* Height (h): จำนวน edge จากรากถึงใบลึกสุด (กำหนด root สูง 0)
-* Depth ของ node: จำนวน edge จากรากถึง node นั้น
-* Level i: กลุ่ม node ที่มี depth = i (root อยู่ level 0)
-
-**ขอบเขตเชิงปริมาณ**
-
-* จำนวน node สูงสุดที่ level i = 2^i
-* จำนวน node สูงสุดของต้นไม้สูง h (perfect) = 2^(h+1) - 1
-* ความสูงต่ำสุดของต้นไม้ที่มี n node = ceil(log2(n+1)) - 1
-* ต้นไม้ perfect: ทุก level เติมเต็ม → n = 2^(h+1) - 1
-* ต้นไม้ complete: ทุก level ยกเว้นอาจ level สุดท้ายเติมเต็ม และ level สุดท้ายเรียงซ้ายสุด
-* ต้นไม้ full/proper: ทุกโหนดภายในมีลูก 2 คน → ความสัมพันธ์สำคัญ: ใบ (L) = โหนดภายใน (I) + 1 และ n = 2L - 1
-* จำนวน null pointers (link ว่าง) ใน binary tree แบบ linked มีค่า n + 1
-
-**ผลลัพธ์พิเศษบน BST**
-
-* Inorder traversal ของ BST จะให้ลำดับ sorted non-decreasing
-* การแทรก/ลบที่ไม่ balance อาจทำให้ h → O(n) (skewed) → traversal/ค้นหาแย่ลง
-
-### 8. Pseudocode
-
-**8.1 Recursive**
+**Recursive (มาตรฐาน)**
 
 ```
 procedure Preorder(node):
@@ -517,19 +373,9 @@ procedure Postorder(node):
     Postorder(node.left)
     Postorder(node.right)
     visit(node)
-
-procedure LevelOrder(root):
-    if root == null: return
-    Q ← empty queue
-    enqueue(Q, root)
-    while Q not empty:
-        u ← dequeue(Q)
-        visit(u)
-        if u.left  != null: enqueue(Q, u.left)
-        if u.right != null: enqueue(Q, u.right)
 ```
 
-**8.2 Iterative (ตัวอย่าง Inorder ด้วย stack)**
+**Iterative Inorder (stack)**
 
 ```
 procedure InorderIterative(root):
@@ -544,7 +390,53 @@ procedure InorderIterative(root):
         curr ← curr.right
 ```
 
-**8.3 Morris Inorder (O(1) extra space)**
+**Iterative Preorder (stack, efficient)**
+
+```
+procedure PreorderIterative(root):
+    if root == null: return
+    S ← [root]
+    while S not empty:
+        node ← pop(S)
+        visit(node)
+        if node.right != null: push(S, node.right)
+        if node.left  != null: push(S, node.left)
+```
+
+**Postorder — one-stack (lastVisited trick)**
+
+```
+procedure PostorderOneStack(root):
+    stack ← empty
+    curr ← root
+    lastVisited ← null
+    while curr != null or stack not empty:
+        while curr != null:
+            push(stack, curr)
+            curr ← curr.left
+        peek ← top(stack)
+        if peek.right == null or peek.right == lastVisited:
+            visit(peek)
+            lastVisited ← pop(stack)
+        else:
+            curr ← peek.right
+```
+
+**Level-order (BFS)**
+
+```
+procedure LevelOrder(root):
+    if root == null: return
+    Q ← empty queue
+    enqueue(Q, root)
+    while Q not empty:
+        u ← dequeue(Q)
+        visit(u)
+        if u.left != null: enqueue(Q, u.left)
+        if u.right!= null: enqueue(Q, u.right)
+```
+
+**Morris Inorder (O(1) extra space)** — conceptual pseudocode
 
 ```
 procedure MorrisInorder(root):
@@ -557,16 +449,69 @@ procedure MorrisInorder(root):
             pre ← curr.left
             while pre.right != null and pre.right != curr:
                 pre ← pre.right
-            if pre.right == null:        # สร้าง thread
-                pre.right ← curr
+            if pre.right == null:
+                pre.right ← curr    # create thread
                 curr ← curr.left
-            else:                         # ลบ thread และ visit
-                pre.right ← null
+            else:
+                pre.right ← null    # remove thread
                 visit(curr)
                 curr ← curr.right
 ```
 
-### 9. Python Example
+### 6. Worked Example (Step-by-step)
+
+ใช้ต้นไม้ตัวอย่าง:
+
+```
+        A
+       / \
+      B   C
+     / \   \
+    D   E   F
+```
+
+* Preorder: visit A → B → D → E → C → F
+* Inorder: D → B → E → A → C → F
+* Postorder: D → E → B → F → C → A
+* Level-order: A → B → C → D → E → F
+
+(ถ้าต้องการ ผมสามารถใส่ภาพ diagram แบบไฮไลท์แต่ละขั้นให้ดูทีละ step ได้)
+
+### 7. Traversal → Reconstruction (uniqueness)
+
+* Inorder + Preorder → **unique** binary tree (เมื่อ keys distinct)
+* Inorder + Postorder → **unique** binary tree (เมื่อ keys distinct)
+* Preorder + Postorder → โดยทั่วไป **ไม่ unique** (แต่จะ unique ถ้า tree เป็น full/proper)
+* สำหรับ BST: Preorder (หรือ Postorder) เดียวก็ reconstruct ได้โดยใช้ invariant ของ BST
+
+**ตัวอย่าง reconstruct (แนวคิด)**
+
+* Preorder ให้ root เป็นตัวแรก → หา index ใน inorder แบ่ง left/right subtrees → ทำซ้ำแบบ recursive
+
+### 8. Related Properties ของ Binary Trees (สำคัญ)
+
+**นิยามพื้นฐาน**
+
+* Height (h): จำนวน edges จาก root ถึง leaf ที่ลึกที่สุด
+* Depth ของ node: จำนวน edges จาก root ถึง node นั้น
+* Level i: กลุ่ม node ที่ depth = i (root ที่ level 0)
+
+**สูตร/ความสัมพันธ์สำคัญ**
+
+* จำนวน node สูงสุดที่ level i = 2^i
+* จำนวน node ของ perfect tree สูงสุดเมื่อ height = h: n = 2^{h+1} - 1
+* สำหรับ tree ที่มี n node: minimum possible height ≈ ⌈log2(n+1)⌉ - 1
+* full/proper tree (ทุก internal node มี 2 ลูก): L (จำนวนใบ) = I (จำนวน internal) + 1; n = 2L - 1
+* complete tree: เติมจากซ้าย → ใช้ array index mapping (parent i => children 2i+1, 2i+2)
+
+**Diameter (เส้นทางยาวสุด)**
+
+* Diameter = max over nodes (height(left) + height(right))
+* คำนวณแบบ O(n) โดยใช้ postorder (คืน height และปรับค่า diameter ระหว่าง traversal)
+
+### 9. Implementations — Python Examples
+
+(จัดให้ทั้ง recursive, iterative, Morris สำหรับ inorder)
 
 ```python
 from collections import deque
@@ -577,8 +522,7 @@ class Node:
         self.left = None
         self.right = None
 
-# Recursive traversals
-
+# --- Recursive traversals ---
 def preorder(node, out):
     if not node: return
     out.append(node.key)
@@ -597,7 +541,7 @@ def postorder(node, out):
     postorder(node.right, out)
     out.append(node.key)
 
-# Iterative inorder (stack)
+# --- Iterative variants ---
 
 def inorder_iterative(root):
     res, stack = [], []
@@ -611,57 +555,6 @@ def inorder_iterative(root):
         curr = curr.right
     return res
 
-# Level-order (BFS)
-
-def level_order(root):
-    if not root: return []
-    res, q = [], deque([root])
-    while q:
-        u = q.popleft()
-        res.append(u.key)
-        if u.left: q.append(u.left)
-        if u.right: q.append(u.right)
-    return res
-
-# Build example tree
-#         'A'
-#        /    \
-#      'B'    'C'
-#      /  \      \
-#    'D'  'E'    'F'
-A = Node('A'); B = Node('B'); C = Node('C')
-D = Node('D'); E = Node('E'); F = Node('F')
-A.left, A.right = B, C
-B.left, B.right = D, E
-C.right = F
-
-po, io, pto = [], [], []
-preorder(A, po); inorder(A, io); postorder(A, pto)
-print('Preorder   :', po)   # ['A','B','D','E','C','F']
-print('Inorder    :', io)   # ['D','B','E','A','C','F']
-print('Postorder  :', pto)  # ['D','E','B','F','C','A']
-print('Level-order:', level_order(A))  # ['A','B','C','D','E','F']
-```
-
-### 10. Edge Cases & Tips
-
-* Empty tree / single node: โค้ดควรรองรับได้
-* Skewed tree (เหมือนลิงก์ลิสต์): h ≈ n-1 → ระวัง recursion stack ลึก
-* Duplicates: นิยาม BST ต้องชัด (เช่น ซ้ำไปทางซ้ายเสมอ หรืออนุญาตเท่ากันอยู่ขวา)
-* Stability ของ traversal: Inorder ของ BST ให้ลำดับเรียงเสมอ แต่ถ้ามี duplicate ต้องกำหนดข้อตกลง
-* Morris: เร็วและใช้ O(1) space แต่แก้ pointer ชั่วคราว ควรระวังถ้าต้นไม้แชร์/อ้างอิงที่อื่น
-
-### เพิ่มเติม — ขยายความเชิงลึก (Detailed Additions)
-
-#### A. Iterative Traversals (more variants)
-
-* **Iterative Preorder (stack, efficient):**
-
-  1. push root
-  2. while stack not empty: node = pop; visit(node); if node.right push; if node.left push
-  3. ผลได้เป็น Root, Left, Right
-
-```
 def preorder_iterative(root):
     if not root: return []
     res, stack = [], [root]
@@ -671,33 +564,7 @@ def preorder_iterative(root):
         if node.right: stack.append(node.right)
         if node.left:  stack.append(node.left)
     return res
-```
 
-* **Postorder — two stacks (ง่ายเข้าใจ):**
-
-  1. s1.push(root)
-  2. while s1: u = s1.pop(); s2.push(u); if u.left s1.push(u.left); if u.right s1.push(u.right)
-  3. pop s2 จะได้ postorder
-
-```
-def postorder_two_stacks(root):
-    if not root: return []
-    s1, s2, res = [root], [], []
-    while s1:
-        node = s1.pop()
-        s2.append(node)
-        if node.left: s1.append(node.left)
-        if node.right: s1.append(node.right)
-    while s2:
-        res.append(s2.pop().key)
-    return res
-```
-
-* **Postorder — one stack (lastVisited trick):**
-
-  * เก็บ pointer lastVisited เพื่อรู้ว่าเพิ่งกลับมาจากลูกขวาหรือยัง
-
-```
 def postorder_one_stack(root):
     res, stack = [], []
     curr, lastVisited = root, None
@@ -712,15 +579,20 @@ def postorder_one_stack(root):
         else:
             curr = peek.right
     return res
-```
 
-#### B. Morris Traversal (เพิ่มเติม)
+def level_order(root):
+    if not root: return []
+    res, q = [], deque([root])
+    while q:
+        u = q.popleft()
+        res.append(u.key)
+        if u.left: q.append(u.left)
+        if u.right: q.append(u.right)
+    return res
 
-* **Morris Inorder**: ใช้ predecessor ของ node ใน left subtree เพื่อสร้าง temporary thread → O(1) extra space. (พอมีในเอกสารแล้ว)
-* **Morris Preorder**: คล้าย Inorder แต่ visit ก่อนสร้าง thread
+# --- Morris Inorder (O(1) space) ---
 
-```
-def morris_preorder(root):
+def morris_inorder(root):
     res = []
     curr = root
     while curr:
@@ -729,125 +601,43 @@ def morris_preorder(root):
             curr = curr.right
         else:
             pre = curr.left
-            while pre.right and pre.right != curr:
+            while pre.right and pre.right is not curr:
                 pre = pre.right
             if not pre.right:
-                res.append(curr.key)  # visit before threading
                 pre.right = curr
                 curr = curr.left
             else:
                 pre.right = None
+                res.append(curr.key)
                 curr = curr.right
     return res
+
+# --- Example tree ---
+A = Node('A'); B = Node('B'); C = Node('C')
+D = Node('D'); E = Node('E'); F = Node('F')
+A.left, A.right = B, C
+B.left, B.right = D, E
+C.right = F
+
+# Test
+print('Preorder   :', (lambda: (lambda out: (preorder(A,out), out)[1])([]))())
+print('Inorder    :', (lambda: (lambda out: (inorder(A,out), out)[1])([]))())
+print('Postorder  :', (lambda: (lambda out: (postorder(A,out), out)[1])([]))())
+print('Inorder itr:', inorder_iterative(A))
+print('Preorder itr:', preorder_iterative(A))
+print('Postorder 1stk:', postorder_one_stack(A))
+print('Level-order:', level_order(A))
+print('Morris Inorder:', morris_inorder(A))
 ```
 
-* **Morris Postorder (concept):** ทำโดยการสร้าง dummy root, thread ไปยัง predecessor แล้วเมื่อลบ thread ให้ reverse path ระหว่างสอง node เพื่อ collect nodes ใน order ที่ต้องการ → ซับซ้อนขึ้นแต่ยัง O(1) space
+### 10. Edge Cases & Practical Tips
 
-#### C. Reconstruction Algorithms (โค้ดตัวอย่าง)
-
-* **Reconstruct from Inorder + Preorder** (unique if keys distinct)
-
-```
-def build_tree_pre_in(preorder, inorder):
-    if not preorder or not inorder: return None
-    root_val = preorder[0]
-    root = Node(root_val)
-    i = inorder.index(root_val)
-    root.left = build_tree_pre_in(preorder[1:1+i], inorder[:i])
-    root.right = build_tree_pre_in(preorder[1+i:], inorder[i+1:])
-    return root
-```
-
-* **Reconstruct from Inorder + Postorder**
-
-```
-def build_tree_post_in(postorder, inorder):
-    if not postorder or not inorder: return None
-    root_val = postorder[-1]
-    root = Node(root_val)
-    i = inorder.index(root_val)
-    root.left = build_tree_post_in(postorder[:i], inorder[:i])
-    root.right = build_tree_post_in(postorder[i:-1], inorder[i+1:])
-    return root
-```
-
-#### D. Expression Trees & Evaluation (application)
-
-* สร้าง expression tree จาก postfix (หรือ inorder+postfix) แล้ว **evaluate** โดย postorder traversal
-
-```
-def evaluate_postfix(tokens):
-    stack = []
-    for t in tokens:
-        if t.isdigit(): stack.append(int(t))
-        else:
-            b = stack.pop(); a = stack.pop()
-            if t == '+': stack.append(a+b)
-            elif t == '-': stack.append(a-b)
-            elif t == '*': stack.append(a*b)
-            elif t == '/': stack.append(a//b)
-    return stack[-1]
-```
-
-#### E. Serialization / Deserialization
-
-* **Preorder with null markers** (เช่น '#' หรือ None) ใช้ serialize tree เป็น stream แล้ว deserialize ได้โดยการอ่าน stream ตาม preorder
-
-```
-def serialize(root):
-    res = []
-    def dfs(u):
-        if not u:
-            res.append('#'); return
-        res.append(str(u.key))
-        dfs(u.left); dfs(u.right)
-    dfs(root)
-    return ' '.join(res)
-
-def deserialize(tokens):
-    it = iter(tokens.split())
-    def dfs():
-        val = next(it)
-        if val == '#': return None
-        node = Node(val)
-        node.left = dfs(); node.right = dfs()
-        return node
-    return dfs()
-```
-
-#### F. Tree Metrics computable by traversal
-
-* **Count nodes**: single traversal, O(n)
-* **Count leaves**: check node.left == node.right == None
-* **Height**: recursive depth
-* **Diameter** (longest path):
-
-  * naive O(n^2): for every node compute height left+right
-  * optimal O(n): single postorder that returns (height, diameter)
-
-```
-def diameter(root):
-    ans = 0
-    def dfs(u):
-        nonlocal ans
-        if not u: return 0
-        L = dfs(u.left); R = dfs(u.right)
-        ans = max(ans, L + R)
-        return 1 + max(L, R)
-    dfs(root)
-    return ans
-```
-
-#### G. Threaded Binary Trees (idea)
-
-* แทนที่จะมี null pointers ไว้ เชื่อม pointer ของ node ที่ไม่มี child ไปยัง successor/predecessor (inorder) → ทำให้ traversal ง่ายขึ้นและบางครั้งไม่ต้องใช้ stack/recursion
-
-#### H. Practical Tips / Pitfalls
-
-* ระวัง recursion depth ถ้าต้นไม้ skewed → ใช้ iterative หรือ increase recursion limit
-* เลือกวิธี traversal ตาม constraint: หากต้องการ O(1) extra space → Morris (แต่มี side-effect กับ pointer)
-* ในการ reconstruct, ถ้ามี duplicate keys ต้องใช้ extra information (เช่น unique id)
-* สำหรับ parallel processing ของต้นไม้: level-order ช่วยแบ่งงานเป็นระดับ ๆ
+* **Empty tree / single node:** ทุกฟังก์ชันควรรองรับ
+* **Skewed tree (เหมือน linked-list):** recursion depth อาจลึก → ใช้ iterative หรือเพิ่ม recursion limit
+* **Duplicates in BST:** ต้องกำหนด policy (<= ไปซ้าย หรือ < ซ้าย, = ขวา ฯลฯ)
+* **Morris traversal caveat:** เปลี่ยน pointer ชั่วคราว — ไม่ควรใช้ถ้าต้นไม้ถูกแชร์/มี references ภายนอก
+* **เลือก traversal ตามงาน:** ต้องการ sorted order → inorder; ต้องการ evaluate expression → postorder; ต้องการ process per-level → level-order
 
 ---
+
 
