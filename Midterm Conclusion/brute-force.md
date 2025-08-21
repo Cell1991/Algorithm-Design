@@ -3,16 +3,17 @@
 วิธีแก้ปัญหาแบบตรงไปตรงมา ลองทุกความเป็นไปได้ 
 
 ### สารบัญ
-- [⚡ Exhaustive Search](#-exhaustive-search)
-- [🔹 Bubble Sort](#-bubble-sort)
-- [🔹 Selection Sort](#-selection-sort)
-- [🔹 Sequential Search](#-sequential-search)
-- [🔹 Brute-force String Matching](#-brute-force-string-matching)
-- [🔹 Closest-pair and Convex-hull Problems](#-closest-pair-and-convex-hull-problems)
-- [🗺️ Traveling Salesman Problem TSP](#-traveling-salesman-problem-tsp)
-- [🎒 Knapsack Problem](#-knapsack-problem)
-- [📝 Assignment Problem](#-assignment-problem)
-- [🌳 Depth-First Search DFS and Breadth-First Search BFS](#-depth-first-search-dfs-and-breadth-first-search-bfs)
+[⚡ Exhaustive Search](#-exhaustive-search)  
+[🔹 Bubble Sort](#-bubble-sort)  
+[🔹 Selection Sort](#-selection-sort)  
+[🔹 Sequential Search](#-sequential-search)  
+[🔹 Brute-force String Matching](#-brute-force-string-matching)  
+[🔹 Closest-pair and Convex-hull Problems](#-closest-pair-and-convex-hull-problems)  
+[🗺️ Traveling Salesman Problem TSP](#-traveling-salesman-problem-tsp)  
+[🎒 Knapsack Problem](#-knapsack-problem)  
+[📝 Assignment Problem](#-assignment-problem)  
+[🌳 Depth-First Search DFS and Breadth-First Search BFS](#-depth-first-search-dfs-and-breadth-first-search-bfs)
+
 
 ---
 
