@@ -5,7 +5,7 @@
 
 ---
 
-## **1️⃣ Brute Force**
+## **[1️⃣ Brute Force](Brute Force.md)**
 วิธีแก้ปัญหาแบบตรงไปตรงมา ลองทุกความเป็นไปได้ (`Exhaustive Search`)  
 
 ⚡ `Exhaustive Search`  
@@ -61,3 +61,4 @@
 🔹 `Quick Sort`  
 🌳 `Binary Tree Traversals and Related Properties`  
 🔹 `Closest-pair and Convex-hull Problems` *(ประสิทธิภาพดีกว่า Brute Force)*
+
