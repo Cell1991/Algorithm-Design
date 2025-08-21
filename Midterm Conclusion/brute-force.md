@@ -9,7 +9,7 @@
 [🔹 Sequential Search](#-sequential-search)  
 [🔹 Brute-force String Matching](#-brute-force-string-matching)  
 [🔹 Closest-pair and Convex-hull Problems](#-closest-pair-and-convex-hull-problems)  
-[🗺️ Traveling Salesman Problem (TSP)](TSP.md)  
+[🗺️ Traveling Salesman Problem](#-traveling-salesman-problem) 
 [🎒 Knapsack Problem](#-knapsack-problem)  
 [📝 Assignment Problem](#-assignment-problem)  
 [🌳 Depth-First Search DFS and Breadth-First Search BFS](#-depth-first-search-dfs-and-breadth-first-search-bfs)
@@ -489,7 +489,7 @@ print(pair, dist)
 
 ---
 
-## 🗺️ Traveling Salesman Problem (TSP)
+## 🗺️ Traveling Salesman Problem  
 
 ### 1. Concept
 **Traveling Salesman Problem (TSP)** คือปัญหาในการหา **เส้นทางสั้นที่สุด** ที่ผู้ขายสินค้าจะต้องเยี่ยมชมทุกเมือง **ครั้งเดียว** และกลับมาที่เมืองเริ่มต้น  
