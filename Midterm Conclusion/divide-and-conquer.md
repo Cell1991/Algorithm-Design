@@ -488,5 +488,156 @@ print("Levelorder:", level_order(A))
   - สำหรับ full/proper tree: L (leaf) = I (internal) + 1
 - **Diameter:** ค่าที่ยาวที่สุดของ path ระหว่างสอง node ใด ๆ (คำนวณ O(n) ด้วย postorder)
 
+## 7. Traversal → Reconstruction (uniqueness)
 
+* Inorder + Preorder → **unique** binary tree (เมื่อ keys distinct)  
+* Inorder + Postorder → **unique** binary tree (เมื่อ keys distinct)  
+* Preorder + Postorder → โดยทั่วไป **ไม่ unique** (แต่จะ unique ถ้า tree เป็น full/proper)  
+* สำหรับ BST: Preorder (หรือ Postorder) เดียวก็ reconstruct ได้โดยใช้ invariant ของ BST  
 
+**ตัวอย่าง reconstruct (แนวคิด)**  
+* Preorder ให้ root เป็นตัวแรก → หา index ใน inorder แบ่ง left/right subtrees → ทำซ้ำแบบ recursive  
+
+---
+
+## 8. Related Properties ของ Binary Trees (สำคัญ)
+
+**นิยามพื้นฐาน**  
+* Height (h): จำนวน edges จาก root ถึง leaf ที่ลึกที่สุด  
+* Depth ของ node: จำนวน edges จาก root ถึง node นั้น  
+* Level i: กลุ่ม node ที่ depth = i (root ที่ level 0)  
+
+**สูตร/ความสัมพันธ์สำคัญ**  
+* จำนวน node สูงสุดที่ level i = 2^i  
+* จำนวน node ของ perfect tree สูงสุดเมื่อ height = h: n = 2^{h+1} - 1  
+* สำหรับ tree ที่มี n node: minimum possible height ≈ ⌈log2(n+1)⌉ - 1  
+* full/proper tree (ทุก internal node มี 2 ลูก): L (จำนวนใบ) = I (จำนวน internal) + 1; n = 2L - 1  
+* complete tree: เติมจากซ้าย → ใช้ array index mapping (parent i ⇒ children 2i+1, 2i+2)  
+
+**Diameter (เส้นทางยาวสุด)**  
+* Diameter = max over nodes (height(left) + height(right))  
+* คำนวณแบบ O(n) โดยใช้ postorder (คืน height และปรับค่า diameter ระหว่าง traversal)  
+
+---
+
+## 9. Implementations — Python Examples
+
+** recursive, iterative, Morris สำหรับ inorder **
+
+```python
+from collections import deque
+
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+# --- Recursive traversals ---
+def preorder(node, out):
+    if not node: return
+    out.append(node.key)
+    preorder(node.left, out)
+    preorder(node.right, out)
+
+def inorder(node, out):
+    if not node: return
+    inorder(node.left, out)
+    out.append(node.key)
+    inorder(node.right, out)
+
+def postorder(node, out):
+    if not node: return
+    postorder(node.left, out)
+    postorder(node.right, out)
+    out.append(node.key)
+
+# --- Iterative variants ---
+def inorder_iterative(root):
+    res, stack = [], []
+    curr = root
+    while curr or stack:
+        while curr:
+            stack.append(curr)
+            curr = curr.left
+        curr = stack.pop()
+        res.append(curr.key)
+        curr = curr.right
+    return res
+
+def preorder_iterative(root):
+    if not root: return []
+    res, stack = [], [root]
+    while stack:
+        node = stack.pop()
+        res.append(node.key)
+        if node.right: stack.append(node.right)
+        if node.left:  stack.append(node.left)
+    return res
+
+def postorder_one_stack(root):
+    res, stack = [], []
+    curr, lastVisited = root, None
+    while curr or stack:
+        while curr:
+            stack.append(curr)
+            curr = curr.left
+        peek = stack[-1]
+        if not peek.right or peek.right == lastVisited:
+            res.append(peek.key)
+            lastVisited = stack.pop()
+        else:
+            curr = peek.right
+    return res
+
+def level_order(root):
+    if not root: return []
+    res, q = [], deque([root])
+    while q:
+        u = q.popleft()
+        res.append(u.key)
+        if u.left: q.append(u.left)
+        if u.right: q.append(u.right)
+    return res
+
+# --- Morris Inorder (O(1) space) ---
+def morris_inorder(root):
+    res = []
+    curr = root
+    while curr:
+        if not curr.left:
+            res.append(curr.key)
+            curr = curr.right
+        else:
+            pre = curr.left
+            while pre.right and pre.right is not curr:
+                pre = pre.right
+            if not pre.right:
+                pre.right = curr
+                curr = curr.left
+            else:
+                pre.right = None
+                res.append(curr.key)
+                curr = curr.right
+    return res
+
+# --- Example tree ---
+A = Node('A'); B = Node('B'); C = Node('C')
+D = Node('D'); E = Node('E'); F = Node('F')
+A.left, A.right = B, C
+B.left, B.right = D, E
+C.right = F
+
+# Test
+print('Preorder   :', (lambda: (lambda out: (preorder(A,out), out)[1])([]))())
+print('Inorder    :', (lambda: (lambda out: (inorder(A,out), out)[1])([]))())
+print('Postorder  :', (lambda: (lambda out: (postorder(A,out), out)[1])([]))())
+print('Inorder itr:', inorder_iterative(A))
+print('Preorder itr:', preorder_iterative(A))
+print('Postorder 1stk:', postorder_one_stack(A))
+print('Level-order:', level_order(A))
+print('Morris Inorder:', morris_inorder(A))
+
+```
+
+---
