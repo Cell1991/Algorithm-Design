@@ -1254,4 +1254,322 @@ print(pivot_index) # Output: 0
 
 ---
 
+## 🔹 Quick Select
+
+### 1. Concept / Purpose
+
+* Quick Select เป็น **algorithm สำหรับหาค่า k-th smallest (หรือ largest) element** ใน array
+* ใช้แนวคิด **partitioning แบบ Quick Sort** แต่ไม่ต้อง sort ทั้ง array
+* วัตถุประสงค์: ลดเวลาในการค้นหาค่าอันดับที่ต้องการให้เร็วกว่า sorting ทั้งหมด
+
+### 2. Motivation / Why use it
+
+* ต้องการหา k-th element แบบ efficient โดยไม่ต้อง sort array ทั้งหมด
+* ใช้ใน statistics, median finding, หรือ selection problems
+* ทำงานได้เร็วและประหยัด memory สำหรับข้อมูลขนาดใหญ่
+
+### 3. Complexity Analysis
+
+| Aspect | Complexity                                             |
+| ------ | ------------------------------------------------------ |
+| Time   | O(n) average, O(n^2) worst case                        |
+| Space  | O(1) in-place for iterative / O(log n) recursive stack |
+
+### 4. Use Cases
+
+* Finding median or other order statistics
+* Selection problems in arrays or lists
+* Algorithms that require k-th smallest or largest element
+
+### 5. Principle / How it works
+
+* **หลักการคิด:**
+
+  1. เลือก pivot จาก array
+  2. Partition array รอบ pivot (ใช้ Lomuto หรือ Hoare partitioning)
+  3. ตรวจสอบตำแหน่ง pivot index:
+
+     * ถ้า pivot index == k → เจอ element ที่ต้องการ
+     * ถ้า pivot index > k → search ซ้ำใน left partition
+     * ถ้า pivot index < k → search ซ้ำใน right partition (adjust k accordingly)
+  4. ทำซ้ำจนเจอ element ที่ต้องการ
+* Concept: ใช้ **divide and conquer / decrease by a factor** แต่ไม่ sort ทั้ง array
+
+### 6. Example
+
+* Array = \[7, 10, 4, 3, 20, 15], k = 3 (3rd smallest)
+* Pivot = 15, partition → \[7,10,4,3,15,20], pivot index = 5
+* k < pivot index → search left partition \[7,10,4,3]
+* Pivot = 4, partition → \[3,4,7,10], pivot index = 1
+* k > pivot index → search right partition \[7,10] (k adjusted)
+* Pivot = 7, pivot index = 2 → เจอ 3rd smallest = 7
+
+### 7. Pseudocode
+
+```
+procedure QuickSelect(arr, low, high, k):
+    if low == high:
+        return arr[low]
+    pivot_index = partition(arr, low, high)
+    if k == pivot_index:
+        return arr[k]
+    elif k < pivot_index:
+        return QuickSelect(arr, low, pivot_index - 1, k)
+    else:
+        return QuickSelect(arr, pivot_index + 1, high, k)
+```
+
+### 8. Python Example
+
+```python
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+    arr[i], arr[high] = arr[high], arr[i]
+    return i
+
+
+def quick_select(arr, low, high, k):
+    if low == high:
+        return arr[low]
+    pivot_index = partition(arr, low, high)
+    if k == pivot_index:
+        return arr[k]
+    elif k < pivot_index:
+        return quick_select(arr, low, pivot_index - 1, k)
+    else:
+        return quick_select(arr, pivot_index + 1, high, k)
+
+# Example usage
+arr = [7, 10, 4, 3, 20, 15]
+k = 3
+print(quick_select(arr, 0, len(arr)-1, k-1))  # Output: 7 (3rd smallest)
+```
+
+---
+
+## 🔹 Interpolation Search
+
+### 1. Concept / Purpose
+
+* Interpolation Search เป็น **search algorithm** ใช้สำหรับ **ค้นหาค่าใน sorted array**
+* แตกต่างจาก Binary Search ที่ใช้ mid-point คาดการณ์ตำแหน่งที่น่าจะมีค่าเป้าหมายตาม **linear interpolation**
+* วัตถุประสงค์: ลดจำนวน comparison สำหรับ **uniformly distributed array**
+
+### 2. Motivation / Why use it
+
+* ต้องการ search แบบเร็วกว่า binary search ในบางกรณี
+* ใช้ได้ดีกับ **data ที่กระจายค่าใกล้เคียงกัน**
+* เหมาะสำหรับ **search optimization** ใน sorted datasets
+
+### 3. Complexity Analysis
+
+| Aspect | Complexity                                                   |
+| ------ | ------------------------------------------------------------ |
+| Time   | O(log log n) average (uniform distribution), O(n) worst case |
+| Space  | O(1) iterative                                               |
+
+### 4. Use Cases
+
+* Searching in uniformly distributed sorted arrays
+* Database indexing optimization
+* Algorithm teaching: interpolation vs binary search
+
+### 5. Principle / How it works
+
+* **หลักการคิด:**
+
+  1. Array ต้อง **sorted**
+  2. คาดการณ์ตำแหน่ง `pos` ของ target ด้วย formula:
+     $pos = low + \frac{(x - arr[low]) * (high - low)}{arr[high] - arr[low]}$
+  3. ตรวจสอบ `arr[pos]`:
+
+     * ถ้า arr\[pos] == x → เจอค่า
+     * ถ้า arr\[pos] < x → search right (pos+1 to high)
+     * ถ้า arr\[pos] > x → search left (low to pos-1)
+  4. ทำซ้ำจนเจอค่า หรือ low > high
+* Concept: ใช้ **value-based estimation** แทนการแบ่ง array ครึ่งหนึ่ง
+
+### 6. Example
+
+* Array = \[10, 20, 30, 40, 50], target = 30
+* low=0, high=4
+* pos = 0 + ((30-10)\*(4-0)) // (50-10) = 2
+* arr\[2] = 30 → เจอ target ในครั้งเดียว
+
+### 7. Pseudocode
+
+```
+procedure InterpolationSearch(arr, x):
+    low = 0
+    high = length(arr) - 1
+    while low <= high and x >= arr[low] and x <= arr[high]:
+        pos = low + ((x - arr[low]) * (high - low)) // (arr[high] - arr[low])
+        if arr[pos] == x:
+            return pos
+        elif arr[pos] < x:
+            low = pos + 1
+        else:
+            high = pos - 1
+    return -1  # not found
+```
+
+### 8. Python Example
+
+```python
+def interpolation_search(arr, x):
+    low = 0
+    high = len(arr) - 1
+    while low <= high and x >= arr[low] and x <= arr[high]:
+        if arr[high] == arr[low]:  # prevent division by zero
+            if arr[low] == x:
+                return low
+            else:
+                return -1
+        pos = low + ((x - arr[low]) * (high - low)) // (arr[high] - arr[low])
+        if arr[pos] == x:
+            return pos
+        elif arr[pos] < x:
+            low = pos + 1
+        else:
+            high = pos - 1
+    return -1
+
+# Example usage
+arr = [10, 20, 30, 40, 50]
+print(interpolation_search(arr, 30))  # Output: 2
+```
+
+---
+
+## 🔹 Binary Search Tree (BST)
+
+### 1. Concept / Purpose
+
+* Binary Search Tree เป็น **tree data structure** สำหรับจัดเก็บข้อมูลแบบ **ordered**
+* แต่ละ node มี **key** และมีลูกซ้าย/ขวา:
+
+  * ลูกซ้าย (left child) ≤ key ของ node
+  * ลูกขวา (right child) ≥ key ของ node
+* วัตถุประสงค์: ทำให้ **search, insert, delete** ทำได้เร็วแบบ O(log n) ใน balanced tree
+
+### 2. Motivation / Why use it
+
+* ต้องการ data structure ที่สามารถ **search, insert, delete efficiently**
+* ใช้ใน **databases, symbol tables, sets, maps**
+* ช่วยในการจัดการข้อมูลที่ต้องเรียงลำดับและค้นหาแบบ dynamic
+
+### 3. Complexity Analysis
+
+| Operation | Average Time | Worst Time |
+| --------- | ------------ | ---------- |
+| Search    | O(log n)     | O(n)       |
+| Insert    | O(log n)     | O(n)       |
+| Delete    | O(log n)     | O(n)       |
+| Space     | O(n)         | O(n)       |
+
+### 4. Use Cases
+
+* Dynamic sorted data storage
+* Database indexing
+* Symbol tables, sets, maps
+* Problems requiring ordered traversal (inorder, preorder, postorder)
+
+### 5. Principle / How it works
+
+* **หลักการคิด:**
+
+  1. BST node มี key, left, right
+  2. **Insertion:**
+
+     * ถ้า value ≤ node.key → insert ซ้าย
+     * ถ้า value > node.key → insert ขวา
+  3. **Search:**
+
+     * เปรียบเทียบ value กับ node.key → เดินซ้ายหรือขวาตามค่าที่เปรียบเทียบ
+  4. **Deletion:**
+
+     * Node leaf → ลบตรง ๆ
+     * Node มีลูก 1 → replace node ด้วยลูก
+     * Node มีลูก 2 → replace node ด้วย inorder successor หรือ predecessor
+
+### 6. Example
+
+* Insert sequence: \[50, 30, 70, 20, 40, 60, 80]
+* BST structure:
+
+```
+        50
+       /  \
+     30    70
+    /  \   /  \
+  20   40 60   80
+```
+
+* Search 40 → start at 50 → go left to 30 → go right to 40 → found
+* Delete 70 → replace 70 ด้วย inorder successor 80 → adjust tree
+
+### 7. Pseudocode
+
+```
+procedure BST_Insert(root, key):
+    if root is None:
+        return new Node(key)
+    if key <= root.key:
+        root.left = BST_Insert(root.left, key)
+    else:
+        root.right = BST_Insert(root.right, key)
+    return root
+
+procedure BST_Search(root, key):
+    if root is None or root.key == key:
+        return root
+    if key < root.key:
+        return BST_Search(root.left, key)
+    else:
+        return BST_Search(root.right, key)
+```
+
+### 8. Python Example
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+def bst_insert(root, key):
+    if root is None:
+        return Node(key)
+    if key <= root.key:
+        root.left = bst_insert(root.left, key)
+    else:
+        root.right = bst_insert(root.right, key)
+    return root
+
+def bst_search(root, key):
+    if root is None or root.key == key:
+        return root
+    if key < root.key:
+        return bst_search(root.left, key)
+    else:
+        return bst_search(root.right, key)
+
+# Example usage
+keys = [50, 30, 70, 20, 40, 60, 80]
+root = None
+for key in keys:
+    root = bst_insert(root, key)
+
+search_key = 40
+found_node = bst_search(root, search_key)
+print(found_node.key if found_node else 'Not found')  # Output: 40
+```
+
+
 
