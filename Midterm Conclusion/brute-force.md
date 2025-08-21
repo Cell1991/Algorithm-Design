@@ -23,10 +23,10 @@
 Exhaustive Search (หรือ Brute-force Search) เป็น **แนวคิดการแก้ปัญหาแบบตรงไปตรงมา**  
 โดยการ **ตรวจสอบทุกความเป็นไปได้** เพื่อหา solution ที่ถูกต้อง  
 
-- **🔹 ลักษณะ:** ตรวจทุก candidate solution โดยไม่มีการคาดเดาหรือ optimization  
-- **📂 ประเภท:** Problem-solving strategy  
-- **✅ ข้อดี:** เข้าใจง่าย, implementation ไม่ซับซ้อน  
-- **⚠️ ข้อเสีย:** **ไม่ efficient** สำหรับปัญหาขนาดใหญ่  
+- **🔹 ลักษณะ** ตรวจทุก candidate solution โดยไม่มีการคาดเดาหรือ optimization  
+- **📂 ประเภท** Problem-solving strategy  
+- **✅ ข้อดี** เข้าใจง่าย, implementation ไม่ซับซ้อน  
+- **⚠️ ข้อเสีย** **ไม่ efficient** สำหรับปัญหาขนาดใหญ่  
 
 **🎯 Motivation / Why use it**  
 - เหมาะสำหรับปัญหาที่ **ขนาดเล็ก** หรือจำนวนความเป็นไปได้จำกัด  
@@ -41,7 +41,7 @@ Exhaustive Search (หรือ Brute-force Search) เป็น **แนวค�
 | All cases  | O(n^k)         | ต้องตรวจทุก combination ของ candidate solutions |
 | Space      | O(1) หรือ O(n) | ขึ้นกับการเก็บ candidate หรือ recursion stack   |
 
-> **💡 หมายเหตุ:** n = จำนวน element, k = จำนวนที่เลือกต่อครั้ง (เช่นคู่, triple)  
+> **💡 หมายเหตุ** n = จำนวน element, k = จำนวนที่เลือกต่อครั้ง (เช่นคู่, triple)  
 
 ---
 
