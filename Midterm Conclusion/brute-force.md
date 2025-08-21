@@ -16,7 +16,7 @@
 
 ---
 
-# ⚡ Exhaustive Search
+## ⚡ Exhaustive Search
 
 **Concept / Purpose:**  
 Exhaustive Search (หรือ Brute-force Search) เป็น **แนวคิดการแก้ปัญหาแบบตรงไปตรงมา**  
