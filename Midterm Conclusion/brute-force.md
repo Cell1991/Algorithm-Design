@@ -13,7 +13,8 @@
 [🗺️ Traveling Salesman Problem](#-traveling-salesman-problem)  
 [🎒 Knapsack Problem](#-knapsack-problem)  
 [📝 Assignment Problem](#-assignment-problem)  
-[🌳 Depth-First Search DFS and Breadth-First Search BFS](#-depth-first-search-dfs-and-breadth-first-search-bfs)
+[🌲 Depth-First Search DFS](#-depth-first-search-dfs)
+[🌳 Breadth-First Search BFS](#-breadth-first-search-bfs)
 
 
 ---
@@ -790,31 +791,19 @@ print(assignment, cost)  # Output: (1, 2, 0) 9
 
 ---
 
-## 🌳 Depth-First Search (DFS) and Breadth-First Search (BFS)
+## 🌲 Depth-First Search (DFS)
 
 ### 1. Concept
-**DFS** และ **BFS** เป็น **graph traversal algorithms** ใช้สำหรับ **สำรวจ nodes ของ graph** หรือ **tree**
-
-- **DFS (Depth-First Search)**: เดินลึกไปตาม branch หนึ่งจนสุดแล้วค่อย backtrack
-- **BFS (Breadth-First Search)**: เดินระดับต่อระดับ (level by level) จาก root node
-- ลักษณะ: ใช้ **graph representation** (adjacency list หรือ adjacency matrix)
-- ประเภท: Graph Traversal / Search Algorithm
+- DFS เป็น **การสำรวจ graph/tree แบบลึกสุดก่อนกลับ**
+- เริ่มจาก node หนึ่ง → เดินไปยัง neighbor ที่ยังไม่ถูกเยี่ยมชม → ทำซ้ำจนไปถึง node สุดท้าย → ค่อย backtrack
+- ใช้ **stack** หรือ recursion
 
 ### 2. Algorithm Steps
-#### DFS (Recursive)
 1. เริ่มจาก node เริ่มต้น
-2. ทำเครื่องหมาย node ว่า **visited**
-3. สำหรับทุก neighbor ที่ยังไม่ visited, เรียก DFS recursively
-
-#### BFS
-1. เริ่มจาก node เริ่มต้น
-2. ใช้ **queue** เก็บ nodes ที่จะสำรวจ
-3. Dequeue node ปัจจุบัน, ทำเครื่องหมาย visited
-4. Enqueue neighbor ทั้งหมดที่ยังไม่ visited
-5. ทำซ้ำจน queue ว่าง
+2. ทำเครื่องหมาย node ว่า visited
+3. สำหรับ neighbor ทุกตัวที่ยังไม่ visited → เรียก DFS recursively
 
 ### 3. Pseudocode
-#### DFS Recursive
 ```
 procedure DFS(node):
     mark node as visited
@@ -823,23 +812,8 @@ procedure DFS(node):
             DFS(neighbor)
 ```
 
-#### BFS
-```
-procedure BFS(startNode):
-    create empty queue Q
-    enqueue startNode to Q
-    mark startNode as visited
-    while Q not empty do
-        node ← dequeue Q
-        for each neighbor of node do
-            if neighbor not visited then
-                enqueue neighbor to Q
-                mark neighbor as visited
-```
-
 ### 4. Python Example
 ```python
-# DFS
 def dfs(graph, start, visited=None):
     if visited is None:
         visited = set()
@@ -850,7 +824,56 @@ def dfs(graph, start, visited=None):
             dfs(graph, neighbor, visited)
     return visited
 
-# BFS
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+print("DFS:")
+dfs(graph, 'A')  # Output: A B D E F C
+```
+
+### 5. Characteristics
+- **Traversal style:** ลึกสุดก่อนค่อยกลับ
+- **Data structure:** Stack (หรือ recursion)
+- **Use cases:** Maze solving, Topological sort, Cycle detection, Path finding
+
+---
+
+## 🌳 Breadth-First Search (BFS)
+
+### 1. Concept
+- BFS เป็น **การสำรวจ graph/tree แบบระดับต่อระดับ (level-order)**
+- เริ่มจาก node หนึ่ง → สำรวจ neighbor ทั้งหมดของ node นั้นก่อน → ขยับไป neighbor ของ neighbor
+- ใช้ **queue**
+
+### 2. Algorithm Steps
+1. เริ่มจาก node เริ่มต้น
+2. ทำเครื่องหมาย node ว่า visited
+3. ใส่ node ลง queue
+4. Dequeue node → ตรวจ neighbor ที่ยังไม่ visited → ทำเครื่องหมาย visited → enqueue neighbor
+5. ทำซ้ำจน queue ว่าง
+
+### 3. Pseudocode
+```
+procedure BFS(startNode):
+    create empty queue Q
+    enqueue startNode to Q
+    mark startNode as visited
+    while Q not empty do
+        node ← dequeue Q
+        for each neighbor of node do
+            if neighbor not visited then
+                enqueue neighbor
+                mark neighbor as visited
+```
+
+### 4. Python Example
+```python
 from collections import deque
 
 def bfs(graph, start):
@@ -865,30 +888,24 @@ def bfs(graph, start):
                 visited.add(neighbor)
                 queue.append(neighbor)
 
-# Example usage
-graph = {
-    'A': ['B', 'C'],
-    'B': ['A', 'D', 'E'],
-    'C': ['A', 'F'],
-    'D': ['B'],
-    'E': ['B', 'F'],
-    'F': ['C', 'E']
-}
-
-print("DFS:")
-dfs(graph, 'A')  # Output: A B D E F C
 print("\nBFS:")
 bfs(graph, 'A')  # Output: A B C D E F
 ```
 
-### 5. Complexity Analysis
-| Algorithm | Time Complexity | Space Complexity |
-|-----------|----------------|----------------|
-| DFS       | O(V + E)       | O(V) (recursion stack) |
-| BFS       | O(V + E)       | O(V) (queue)   |
+### 5. Characteristics
+- **Traversal style:** สำรวจระดับต่อระดับ
+- **Data structure:** Queue
+- **Use cases:** Shortest path (unweighted), Level-order traversal, Social network search
 
-> V = number of vertices, E = number of edges
+---
 
-### 6. Use Cases
-- **DFS**: Topological Sorting, Cycle Detection, Path Finding, Maze Solving
-- **BFS**: Shortest Path (unweighted graph), Level-order traversal, Social network connections
+### 🔹 สรุปความต่าง DFS vs BFS
+
+| Feature          | DFS                           | BFS                           |
+|-----------------|-------------------------------|-------------------------------|
+| Traversal style | ลึกสุดก่อนกลับ               | ระดับต่อระดับ               |
+| Data structure  | Stack / Recursion             | Queue                        |
+| Use case        | Maze solving, Topological sort | Shortest path (unweighted), Level-order traversal |
+| Memory          | O(V) (recursion stack)        | O(V) (queue)                 |
+
+
