@@ -619,3 +619,162 @@ print('Morris Inorder:', morris_inorder(A))
 ```
 
 ---
+
+## 🔹 Closest-Pair Problem (Divide & Conquer)
+
+### 1. Concept / Purpose
+
+Closest-Pair Problem คือการหาคู่จุดที่ **มีระยะห่างระหว่างกันน้อยที่สุด** ในชุดจุด 2D หรือ nD
+เป็นพื้นฐานสำหรับงานด้าน **computational geometry**, เช่น:
+
+* การจัดเรียงจุด
+* การหาสมาชิกใกล้กันใน clustering
+* Collision detection ใน computer graphics
+
+---
+
+### 2. Problem Definition
+
+* Input: ชุดของ n จุด \$P = {p\_1, p\_2, ..., p\_n}\$ ใน 2D
+* Output: คู่จุด \$(p\_i, p\_j)\$ ที่ระยะ Euclidean สั้นที่สุด
+
+**Distance Formula (2D):**
+
+$$
+d(p_i, p_j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
+$$
+
+**Brute-force:** ตรวจทุกคู่ → O(n²)
+
+---
+
+### 🔸 Divide & Conquer Approach
+
+1. **Sort points by x-coordinate**
+2. **Divide:** แบ่งจุดออกเป็นสองครึ่ง (left, right)
+3. **Conquer:** หาคู่ใกล้สุดในแต่ละครึ่ง (recursively) → \$d\_L\$, \$d\_R\$
+4. **Combine:**
+
+   * \$\delta = \min(d\_L, d\_R)\$
+   * ตรวจจุดที่อยู่ใกล้เส้นแบ่ง ±\$\delta\$ (strip)
+   * เฉพาะจุดใน strip ต้อง check pair ระยะใกล้สุด → O(n)
+
+**Key Insight:**
+
+* จุดใน strip แค่ check กับจุดใน strip ที่อยู่ไม่เกิน 7 จุดด้านบน/ล่าง (2D)
+* ทำให้เวลา Combine เป็น O(n)
+
+---
+
+### 3. Step-by-step Example
+
+ชุดจุด:
+
+```
+P = [(2,3), (12,30), (40,50), (5,1), (12,10), (3,4)]
+```
+
+1. Sort by x → `[(2,3),(3,4),(5,1),(12,10),(12,30),(40,50)]`
+2. Divide: left = `[(2,3),(3,4),(5,1)]`, right = `[(12,10),(12,30),(40,50)]`
+3. Recursive closest-pair:
+
+   * Left → (2,3)-(3,4) = \$\sqrt{2} \approx 1.414\$
+   * Right → (12,10)-(12,30) = 20
+4. Combine strip \$\delta = 1.414\$ → ตรวจ strip → ไม่พบคู่ที่ใกล้กว่านี้
+5. Result → **Closest Pair = (2,3) & (3,4), distance ≈ 1.414**
+
+---
+
+### 4. Complexity Analysis
+
+| Step      | Time Complexity |
+| --------- | --------------- |
+| Sorting   | O(n log n)      |
+| Divide    | 2 \* T(n/2)     |
+| Combine   | O(n)            |
+| **Total** | O(n log n)      |
+
+**Space:** O(n) for recursion + temp arrays
+
+---
+
+### 5. Python Example Code
+
+```python
+import math
+
+def dist(p1, p2):
+    return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
+
+def brute_force(P):
+    min_d = float('inf')
+    pair = None
+    n = len(P)
+    for i in range(n):
+        for j in range(i+1, n):
+            d = dist(P[i], P[j])
+            if d < min_d:
+                min_d = d
+                pair = (P[i], P[j])
+    return min_d, pair
+
+def strip_closest(strip, delta):
+    min_d = delta
+    pair = None
+    strip.sort(key=lambda p: p[1])  # sort by y
+    for i in range(len(strip)):
+        for j in range(i+1, len(strip)):
+            if (strip[j][1] - strip[i][1]) >= min_d:
+                break
+            d = dist(strip[i], strip[j])
+            if d < min_d:
+                min_d = d
+                pair = (strip[i], strip[j])
+    return min_d, pair
+
+def closest_pair_rec(Px, Py):
+    n = len(Px)
+    if n <= 3:
+        return brute_force(Px)
+    
+    mid = n // 2
+    Qx = Px[:mid]; Rx = Px[mid:]
+    midpoint = Px[mid][0]
+    
+    Qy = list(filter(lambda p: p[0] <= midpoint, Py))
+    Ry = list(filter(lambda p: p[0] > midpoint, Py))
+    
+    dl, pair_l = closest_pair_rec(Qx, Qy)
+    dr, pair_r = closest_pair_rec(Rx, Ry)
+    
+    delta = min(dl, dr)
+    pair = pair_l if dl <= dr else pair_r
+    
+    strip = [p for p in Py if abs(p[0]-midpoint) < delta]
+    ds, pair_s = strip_closest(strip, delta)
+    
+    if ds < delta:
+        return ds, pair_s
+    else:
+        return delta, pair
+
+def closest_pair(P):
+    Px = sorted(P, key=lambda p: p[0])
+    Py = sorted(P, key=lambda p: p[1])
+    return closest_pair_rec(Px, Py)
+
+# Example
+points = [(2,3), (12,30), (40,50), (5,1), (12,10), (3,4)]
+distance, pair = closest_pair(points)
+print("Closest Pair:", pair, "Distance:", distance)
+```
+
+---
+
+### 6. Notes / Tips
+
+* Algorithm **Divide & Conquer** เหมาะกับ n ใหญ่ (n > 10³)
+* Brute-force เหมาะกับ n เล็ก (n ≤ 3)
+* 2D case ใช้ check max 7 points ใน strip
+* สำหรับ 3D/สูงกว่า ต้องปรับแนวคิด strip → complexity เพิ่ม
+
