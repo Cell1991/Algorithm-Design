@@ -215,113 +215,115 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 ## 🔹 Topological Sorting (DFS)
 
 ### 1. Concept / Purpose
+**Topological Sorting** คือการจัดเรียงลำดับของ **Directed Acyclic Graph (DAG)**  
+โดยที่ถ้ามีเส้นเชื่อม $u \to v$ จะต้องให้ $u$ อยู่ก่อน $v$ เสมอ  
 
-Topological Sorting คือการ **เรียงลำดับจุดยอด (vertices)** ของ
-**Directed Acyclic Graph (DAG)**\
-โดยต้องเรียงให้ **ทุกเส้นทาง (u → v)** มี `u` อยู่ก่อน `v` ในลำดับ
+- **ลักษณะ**: ใช้กับ DAG เท่านั้น  
+- **ประเภท**: Graph Algorithm / Decrease-and-Conquer  
+- **ข้อดี**: ใช้เป็นพื้นฐานในการจัดการ dependency เช่น scheduling, compilation  
+- **ข้อเสีย**: ใช้ไม่ได้ถ้า graph มี cycle  
 
--   **ลักษณะ** ใช้ได้เฉพาะ DAG เท่านั้น\
--   **ประเภท** Graph algorithm\
--   **ข้อดี** ใช้เป็นพื้นฐานในหลายปัญหา เช่น scheduling, dependency
-    resolution\
--   **ข้อเสีย** ใช้ไม่ได้ถ้าเป็นกราฟที่มี cycle
+### 2. Mathematical Formulation
+สำหรับ Directed Acyclic Graph $G = (V, E)$  
+Topological order คือ ลำดับ $v_1, v_2, \dots, v_n$ ที่ทำให้  
 
-------------------------------------------------------------------------
+$$
+\forall (u,v) \in E \quad \Rightarrow \quad \text{pos}(u) < \text{pos}(v)
+$$
 
-### 2. Motivation / Why use it
+โดยที่ $\text{pos}(x)$ = ตำแหน่งของ $x$ ในลำดับ
 
--   ใช้ในการ **จัดลำดับงานที่มี dependency** (เช่น
-    งานที่ต้องทำก่อนหลัง)\
--   ใช้เป็นพื้นฐานในอัลกอริทึมอื่น เช่น **Critical Path Method**,
-    **Course Scheduling**\
--   ใช้ช่วยแก้ปัญหาที่เกี่ยวกับ **การจัดลำดับ dependency**
+### 3. Motivation / Why use it
+- **Scheduling**: เช่น งานที่ต้องทำงานก่อนหลังกัน  
+- **Compilation order**: โปรแกรมที่มี dependency ระหว่าง module  
+- **Course prerequisite**: ลำดับการลงทะเบียนเรียน  
+- **Build systems**: เช่น `make`, `npm`, `maven`  
 
-------------------------------------------------------------------------
+### 4. Algorithm Steps (DFS-based)
+1. เริ่มจาก node ที่ยังไม่ได้เยี่ยมชม  
+2. ทำ DFS ไปยังทุก neighbor  
+3. เมื่อเยี่ยมชม node เสร็จ → push node เข้า stack (หรือ append ที่ต้นลิสต์)  
+4. ทำซ้ำจนกว่าจะครบทุก node  
+5. ลำดับใน stack ที่ได้คือ **Topological Order**
 
-### 3. Algorithm Idea (DFS Approach)
+### 5. Pseudocode
+```
+procedure TopologicalSortDFS(G):
+    mark all vertices as unvisited
+    stack ← empty
+    
+    for each vertex v in G do
+        if v is unvisited then
+            DFS(v, stack)
 
-1.  ใช้ DFS เดินทางในกราฟ\
-2.  เมื่อเยี่ยมครบทุกเพื่อนบ้านของ vertex แล้ว ให้ **push vertex เข้าสู่
-    stack**\
-3.  หลัง DFS ครบทุก node → pop stack ออกมาจะได้ topological order
+    return reverse(stack)
 
-------------------------------------------------------------------------
-
-### 4. Pseudocode
-
-    procedure topologicalSortDFS(G):
-        visited ← set()
-        stack ← empty
-        
-        for each vertex v in G:
-            if v not in visited:
-                DFS(v, visited, stack)
-        
-        return reverse(stack)
-
-    procedure DFS(v, visited, stack):
-        mark v as visited
-        for each neighbor u of v:
-            if u not in visited:
-                DFS(u, visited, stack)
-        push v into stack
-
-------------------------------------------------------------------------
-
-### 5. Python Example
-
-``` python
-from collections import defaultdict
-
-class Graph:
-    def __init__(self, vertices):
-        self.V = vertices
-        self.graph = defaultdict(list)
-
-    def add_edge(self, u, v):
-        self.graph[u].append(v)
-
-    def topological_sort_util(self, v, visited, stack):
-        visited[v] = True
-        for neighbor in self.graph[v]:
-            if not visited[neighbor]:
-                self.topological_sort_util(neighbor, visited, stack)
-        stack.append(v)
-
-    def topological_sort(self):
-        visited = [False] * self.V
-        stack = []
-        for i in range(self.V):
-            if not visited[i]:
-                self.topological_sort_util(i, visited, stack)
-        return stack[::-1]
-
-# Example
-g = Graph(6)
-g.add_edge(5, 2)
-g.add_edge(5, 0)
-g.add_edge(4, 0)
-g.add_edge(4, 1)
-g.add_edge(2, 3)
-g.add_edge(3, 1)
-
-print("Topological Sort:", g.topological_sort())
+procedure DFS(v, stack):
+    mark v as visited
+    for each neighbor u of v do
+        if u is unvisited then
+            DFS(u, stack)
+    push v onto stack
 ```
 
-### 6. Complexity Analysis
+### 6. Python Example
+```python
+from collections import defaultdict
 
-  Case        Time Complexity   Explanation
-  ----------- ----------------- ---------------------------------
-  All cases   O(V + E)          DFS ต้องเยี่ยมทุก vertex + edge
-  Space       O(V)              เก็บ visited + recursion stack
+def topological_sort_dfs(graph):
+    visited = set()
+    stack = []
 
-### 7. Use Cases
+    def dfs(v):
+        visited.add(v)
+        for neighbor in graph[v]:
+            if neighbor not in visited:
+                dfs(neighbor)
+        stack.append(v)
 
--   **Scheduling งาน** ที่มี dependency (เช่น วิชาที่ต้องเรียนตามลำดับ)\
--   **Task dependency resolution** ในระบบ build tools (เช่น Makefile,
-    Gradle)\
--   **การจัดการลำดับงาน** ใน compiler หรือ job scheduler
+    for node in graph:
+        if node not in visited:
+            dfs(node)
 
-------------------------------------------------------------------------
+    return stack[::-1]  # reverse for correct order
+
+# Example usage
+graph = {
+    "A": ["C"],
+    "B": ["C", "D"],
+    "C": ["E"],
+    "D": ["F"],
+    "E": ["H", "F"],
+    "F": ["G"],
+    "G": [],
+    "H": []
+}
+
+print(topological_sort_dfs(graph))
+# Possible Output: ['B', 'D', 'A', 'C', 'E', 'H', 'F', 'G']
+```
+
+### 7. Complexity Analysis
+| Case       | Time Complexity | Explanation                      |
+|------------|----------------|----------------------------------|
+| All cases  | O(V + E)       | DFS ต้องเยี่ยมทุก node และ edge  |
+| Space      | O(V)           | recursion stack + visited + output |
+
+### 8. Use Cases
+- การจัดลำดับงานที่มี **dependency**  
+- การคำนวณ **compilation order** ของไฟล์ source code  
+- การแก้ปัญหา **course prerequisite**  
+- การวิเคราะห์ **dependency resolution** ในระบบ build  
+
+### 9. Visualization (Example Graph)
+```
+B → C → E → F → G
+A ─┘     ↓
+        H
+D ──────┘
+```
+
+✅ Topological Order (หนึ่งในคำตอบ):  
+`[B, D, A, C, E, H, F, G]`
 
 
