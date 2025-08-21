@@ -110,7 +110,7 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 ---
 
-## ⚡ Quick Sort (ฉบับเต็ม: Pivot Strategies + i/j Explanation)
+## ⚡ Quick Sort
 
 ### 1. Concept
 **Quick Sort** เป็นอัลกอริทึมแบบ Divide & Conquer ที่แบ่งลิสต์โดยการเลือก "Pivot" แล้วจัดเรียงค่ารอบ ๆ Pivot  
