@@ -8,13 +8,13 @@
 
 🔹 [Greatest Common Divisor (GCD)](#-greatest-common-divisor-gcd)  
 🔹 [Insertion Sort](#-insertion-sort)  
-🔹 [Topological Sorting (DFS)](#-topological-sorting-dfs)  
+🔹 [Topological Sorting](#-topological-sorting)  
 🔹 [Generating Permutations](#-generating-permutations)  
 
   🔸 [Minimal-change requirement](#-minimal-change-requirement)  
   🔸 [Johnson-Trotter algorithm](#-johnson-trotter-algorithm)  
   🔸 [Lexicographic order](#-lexicographic-order)  
-  🔸 [Binary Reflected Gray Code *(แนวคิด Minimal Change)*](#-binary-reflected-gray-code-แนวคิด-minimal-change)
+  🔸 [Binary Reflected Gray Code (BRGC)*(แนวคิด Minimal Change)*](#-binary-reflected-gray-code-brgc)
 
 **2.2 🔽 Decrease by a Constant Factor**  
 ลดปัญหาลงทีละสัดส่วน เช่น ครึ่งหนึ่งของขนาดเดิม  
@@ -212,7 +212,7 @@ print(sorted_data)  # Output: [2, 3, 4, 5, 8]
 
 ---
 
-## 🔹 Topological Sorting (DFS)
+## 🔹 Topological Sorting
 
 ### 1. Concept / Purpose
 **Topological Sorting** คือการจัดเรียงลำดับของ **Directed Acyclic Graph (DAG)**  
@@ -423,87 +423,106 @@ generate_permutations([1, 2, 3])
 
 ---
 
-# 🔸 Minimal-change Requirement
+## 🔸 Minimal-change Requirement
 
 ### 1. Concept / Purpose
 
-**Minimal-change Requirement** คือแนวคิดในการ **สร้าง permutation ต่อเนื่องกันโดยเปลี่ยน element น้อยที่สุด**
-เปรียบเทียบกับการสร้าง permutation แบบธรรมดาที่อาจสลับหลายตำแหน่งระหว่าง permutation
-
-- **ลักษณะ**: Combinatorial / Algorithmic Problem
-- **ประเภท**: Problem-solving / Permutation Generation
-- **ข้อดี**: ลดจำนวนการเปลี่ยนแปลงระหว่าง permutation → ดีสำหรับ hardware, animation, Gray code
-- **ข้อเสีย**: อัลกอริทึมซับซ้อนกว่าการสร้าง permutation แบบ brute-force
+* Minimal-change Requirement เป็น **แนวคิดในการสร้าง sequence ของ permutations**
+* วัตถุประสงค์: แต่ละ permutation **แตกต่างจากตัวก่อนหน้าเพียงการสลับ 2 elements เท่านั้น**
+* ใช้ใน **generating permutations efficiently** โดยลดความซับซ้อนของการเปลี่ยนแปลง
 
 ### 2. Motivation / Why use it
 
-- ใช้ในการ **hardware testing** เพื่อเปลี่ยน state ทีละน้อย
-- ใช้ใน **Gray code generation**
-- ลด **computational cost** ของการสลับหลายตำแหน่งพร้อมกัน
-- เหมาะสำหรับ **animation / visual simulation** ที่ต้องการ transition ละเอียด
+* ลดความซับซ้อนของการเปลี่ยนแปลงระหว่าง permutations
+* ใช้ใน **backtracking, simulation, combinatorial testing**
+* ทำให้ sequence ของ permutations สามารถ **trace หรือ reproduce** ได้ง่าย
 
 ### 3. Complexity Analysis
 
-| Case       | Time Complexity | Explanation                              |
-|------------|----------------|------------------------------------------|
-| Generation | O(n!)          | ต้องสร้างทุก permutation ของ n elements |
-| Space      | O(n)           | ใช้ recursion stack หรือ temporary array |
+| Aspect | Complexity |
+| ------ | ---------- |
+| Time   | O(n!)      |
+| Space  | O(n)       |
 
 ### 4. Use Cases
 
-- Gray code generation
-- Hardware / circuit testing
-- Stepwise animation / simulation
-- Minimizing changes in combinatorial enumeration
+* Generating permutations for testing all possibilities
+* Simulations ที่ต้องลอง permutation หลายแบบ
+* Problems ที่ต้องการ minimal-change sequences
 
-### 5. Pseudocode (Johnson-Trotter Algorithm Concept)
+### 5. Principle / How it works
+
+* **หลักการคิด:**
+
+  1. เริ่มจาก permutation แรก (เช่น \[1,2,3,...,n])
+  2. สร้าง permutation ถัดไปโดย **สลับเพียง 2 elements**
+  3. ทำซ้ำจนได้ทุก permutation
+* ตัวอย่าง algorithms ที่ใช้: **Johnson-Trotter, Gray code based permutations**
+
+### 6. Example
+
+* n = 3, permutations sequence แบบ minimal-change:
 
 ```
-procedure minimalChangePermutation(arr)
-    initialize direction of each element to LEFT
-    repeat
-        output current permutation
-        find largest mobile element k
-        if no mobile element exists then exit
-        swap k with adjacent element in its direction
-        reverse direction of all elements larger than k
-end procedure
+[1, 2, 3]
+[1, 3, 2]  # swap 2 and 3
+[3, 1, 2]  # swap 1 and 3
+[3, 2, 1]  # swap 1 and 2
+[2, 3, 1]  # swap 2 and 3
+[2, 1, 3]  # swap 1 and 2
 ```
 
-### 6. Python Example (Simplified Johnson-Trotter)
+* สังเกตว่าแต่ละ step **เปลี่ยนแค่ 2 elements**
+
+### 7. Pseudocode
+
+```
+procedure MinimalChangePermutation(n):
+    Initialize first permutation P = [1, 2, ..., n]
+    while not all permutations generated:
+        Find next permutation by swapping 2 elements according to algorithm
+        Output current permutation
+```
+
+### 8. Python Example
 
 ```python
-def minimal_change_permutation(arr):
-    n = len(arr)
-    dir = [-1] * n  # -1 = LEFT, 1 = RIGHT
-    def largest_mobile():
-        mobile = -1
-        idx = -1
+def minimal_change_permutation(n):
+    # Example using Johnson-Trotter idea
+    perm = list(range(1, n+1))
+    dir = [-1] * n  # -1 means LEFT, 1 means RIGHT
+
+    def mobile():
+        m, idx = -1, -1
         for i in range(n):
-            if dir[i] == -1 and i != 0 and arr[i] > arr[i-1]:
-                if arr[i] > mobile:
-                    mobile = arr[i]
-                    idx = i
-            elif dir[i] == 1 and i != n-1 and arr[i] > arr[i+1]:
-                if arr[i] > mobile:
-                    mobile = arr[i]
-                    idx = i
+            neighbor = i + dir[i]
+            if 0 <= neighbor < n and perm[i] > perm[neighbor]:
+                if perm[i] > m:
+                    m, idx = perm[i], i
         return idx
+
     while True:
-        print(arr)
-        i = largest_mobile()
-        if i == -1:
+        print(perm)
+        idx = mobile()
+        if idx == -1:
             break
-        swap_with = i + dir[i]
-        arr[i], arr[swap_with] = arr[swap_with], arr[i]
-        dir[i], dir[swap_with] = dir[swap_with], dir[i]
-        k = arr[swap_with]
-        for j in range(n):
-            if arr[j] > k:
-                dir[j] *= -1
+        neighbor = idx + dir[idx]
+        perm[idx], perm[neighbor] = perm[neighbor], perm[idx]
+        dir[idx], dir[neighbor] = dir[neighbor], dir[idx]
+        idx = neighbor
+        for i in range(n):
+            if perm[i] > perm[idx]:
+                dir[i] *= -1
 
 # Example usage
-minimal_change_permutation([1,2,3])
+minimal_change_permutation(3)
+# Output:
+# [1, 2, 3]
+# [1, 3, 2]
+# [3, 1, 2]
+# [3, 2, 1]
+# [2, 3, 1]
+# [2, 1, 3]
 ```
 
 ---
