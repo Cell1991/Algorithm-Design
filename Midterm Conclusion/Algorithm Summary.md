@@ -57,12 +57,14 @@
 ## **3️⃣ Divide and Conquer**
 แบ่งปัญหาเป็นหลายส่วน แก้แต่ละส่วน แล้วรวมผลลัพธ์  
 
-🔹 `Merge Sort`  
-🔹 `Quick Sort`  
+🔥 `Merge Sort`  
+⚡ `Quick Sort`  
 🌳 `Binary Tree Traversals and Related Properties`  
-🔹 `Closest-pair and Convex-hull Problems` *(ประสิทธิภาพดีกว่า Brute Force)*
+🌀 `Closest-pair Problem` *(ประสิทธิภาพดีกว่า Brute Force)*  
+💎 `Convex-hull Problem` *(ประสิทธิภาพดีกว่า Brute Force)*
 
 ---
+
 
 
 
